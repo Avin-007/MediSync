@@ -115,7 +115,7 @@ const NursePortal = () => {
     toast({
       title: "Visit Completed",
       description: `Visit with ${selectedVisit.patientName} has been marked as completed`,
-      variant: "success",
+      variant: "default", // Changed from "success" to "default"
     });
     
     setSelectedVisit(null);

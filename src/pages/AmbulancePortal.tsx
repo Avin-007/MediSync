@@ -94,7 +94,7 @@ const AmbulancePortal = () => {
     toast({
       title: "Emergency Completed",
       description: "Patient has been successfully transported",
-      variant: "success",
+      variant: "default", // Changed from "success" to "default"
     });
     
     setCurrentEmergency(null);

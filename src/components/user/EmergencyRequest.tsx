@@ -74,7 +74,7 @@ const EmergencyRequest: React.FC<EmergencyRequestProps> = ({ onSubmit }) => {
         toast({
           title: "Location Found",
           description: "Your location has been detected",
-          variant: "success",
+          variant: "default",  // Changed from "success" to "default"
         });
         setAddress("Current Location (detected)");
       }, () => {
