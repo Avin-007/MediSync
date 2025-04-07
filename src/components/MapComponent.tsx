@@ -5,6 +5,13 @@ import { Card, CardContent, CardFooter, CardTitle } from './ui/card';
 import { Button } from './ui/button';
 import { useToast } from '@/hooks/use-toast';
 
+// Add proper type declarations for Google Maps
+declare global {
+  interface Window {
+    google: typeof google;
+  }
+}
+
 interface Location {
   name: string;
   lat: number;
@@ -58,7 +65,7 @@ const MapComponent: React.FC<MapComponentProps> = ({
   useEffect(() => {
     if (!isMapLoaded || !mapRef.current) return;
 
-    const mapOptions = {
+    const mapOptions: google.maps.MapOptions = {
       center: { lat: center.lat, lng: center.lng },
       zoom: 12,
       mapTypeControl: false,

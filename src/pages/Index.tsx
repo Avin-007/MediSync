@@ -5,6 +5,7 @@ import RoleSelection from '@/components/RoleSelection';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Ambulance, Activity, Map, Shield, UserCheck, HeartPulse } from 'lucide-react';
+import { LucideProps } from 'lucide-react';
 
 const Index = () => {
   return (
@@ -61,19 +62,19 @@ const Index = () => {
               <FeatureCard 
                 title="Emergency Route Optimization" 
                 description="Priority routing and traffic light synchronization for ambulances with real-time updates"
-                iconComponent={Map}
+                Icon={Map}
                 className="border-b-medisync-blue"
               />
               <FeatureCard 
                 title="On-Demand Medical Services" 
                 description="Request ambulances or qualified nurses for home visits with just a few taps"
-                iconComponent={HeartPulse}
+                Icon={HeartPulse}
                 className="border-b-medisync-red"
               />
               <FeatureCard 
                 title="Real-time Coordination" 
                 description="Connect hospitals, ambulances, traffic authorities and healthcare providers seamlessly"
-                iconComponent={Activity}
+                Icon={Activity}
                 className="border-b-medisync-blue"
               />
             </div>
@@ -88,28 +89,28 @@ const Index = () => {
               <RoleHighlightCard
                 title="Ambulance Drivers"
                 description="Optimized routes with traffic control coordination"
-                icon={Ambulance}
+                Icon={Ambulance}
                 bgClass="bg-blue-50"
                 iconClass="text-blue-500"
               />
               <RoleHighlightCard
                 title="Traffic Authorities"
                 description="Real-time alerts for emergency vehicle routing"
-                icon={Shield}
+                Icon={Shield}
                 bgClass="bg-green-50"
                 iconClass="text-green-500"
               />
               <RoleHighlightCard
                 title="Hospital Admins"
                 description="Resource management and coordination dashboard"
-                icon={Activity}
+                Icon={Activity}
                 bgClass="bg-purple-50"
                 iconClass="text-purple-500"
               />
               <RoleHighlightCard
                 title="Patients"
                 description="Request emergency services with real-time tracking"
-                icon={UserCheck}
+                Icon={UserCheck}
                 bgClass="bg-red-50"
                 iconClass="text-red-500"
               />
@@ -124,11 +125,11 @@ const Index = () => {
 interface FeatureCardProps {
   title: string;
   description: string;
-  iconComponent: React.ComponentType<{ size?: number }>;
+  Icon: React.ComponentType<LucideProps>;
   className?: string;
 }
 
-const FeatureCard: React.FC<FeatureCardProps> = ({ title, description, iconComponent: Icon, className = "" }) => {
+const FeatureCard: React.FC<FeatureCardProps> = ({ title, description, Icon, className = "" }) => {
   return (
     <Card className={`hover:shadow-lg transition-all duration-300 border-b-4 ${className}`}>
       <CardContent className="p-6">
@@ -145,12 +146,12 @@ const FeatureCard: React.FC<FeatureCardProps> = ({ title, description, iconCompo
 interface RoleHighlightCardProps {
   title: string;
   description: string;
-  icon: React.ComponentType<{ size?: number, className?: string }>;
+  Icon: React.ComponentType<LucideProps>;
   bgClass: string;
   iconClass: string;
 }
 
-const RoleHighlightCard: React.FC<RoleHighlightCardProps> = ({ title, description, icon: Icon, bgClass, iconClass }) => {
+const RoleHighlightCard: React.FC<RoleHighlightCardProps> = ({ title, description, Icon, bgClass, iconClass }) => {
   return (
     <div className="bg-white p-6 rounded-lg shadow hover:shadow-md transition-all">
       <div className={`w-12 h-12 rounded-full ${bgClass} flex items-center justify-center mb-4`}>
