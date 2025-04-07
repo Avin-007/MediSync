@@ -1,5 +1,7 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useToast } from '@/hooks/use-toast';
 
 export type UserRole = 'ambulance' | 'traffic' | 'hospital' | 'user' | 'nurse' | null;
 
@@ -8,6 +10,7 @@ interface AuthUser {
   name: string;
   email: string;
   role: UserRole;
+  avatar?: string;
 }
 
 interface AuthContextType {
@@ -16,6 +19,7 @@ interface AuthContextType {
   login: (email: string, password: string, role: UserRole) => Promise<void>;
   logout: () => void;
   setUserRole: (role: UserRole) => void;
+  checkingAuth: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -26,7 +30,9 @@ interface AuthProviderProps {
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<AuthUser | null>(null);
-
+  const [checkingAuth, setCheckingAuth] = useState(true);
+  const { toast } = useToast();
+  
   // Check for saved auth data on component mount
   useEffect(() => {
     const savedUser = localStorage.getItem('medisync_user');
@@ -36,8 +42,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       } catch (error) {
         console.error('Failed to parse saved user data');
         localStorage.removeItem('medisync_user');
+        toast({
+          title: "Session Error",
+          description: "Your session data was corrupted. Please login again.",
+          variant: "destructive",
+        });
       }
     }
+    setCheckingAuth(false);
   }, []);
 
   // In a real app, this would validate with a backend
@@ -48,24 +60,48 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       throw new Error('Email and password are required');
     }
 
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      throw new Error('Please enter a valid email address');
+    }
+
+    // Validate password (at least 6 characters)
+    if (password.length < 6) {
+      throw new Error('Password must be at least 6 characters long');
+    }
+
     // Simulate API call delay
     await new Promise(resolve => setTimeout(resolve, 800));
+    
+    const firstName = email.split('@')[0];
+    const capitalizedName = firstName.charAt(0).toUpperCase() + firstName.slice(1);
     
     // Create mock user (in a real app, this would come from your backend)
     const newUser: AuthUser = {
       id: `user-${Date.now()}`,
-      name: email.split('@')[0],
+      name: capitalizedName,
       email,
       role: role || 'user',
+      avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${email}`,
     };
     
     setUser(newUser);
     localStorage.setItem('medisync_user', JSON.stringify(newUser));
+    
+    toast({
+      title: "Login Successful",
+      description: `Welcome back, ${newUser.name}!`,
+    });
   };
 
   const logout = () => {
     setUser(null);
     localStorage.removeItem('medisync_user');
+    toast({
+      title: "Logged Out",
+      description: "You have been successfully logged out.",
+    });
   };
 
   const setUserRole = (role: UserRole) => {
@@ -82,7 +118,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       isAuthenticated: !!user, 
       login,
       logout,
-      setUserRole
+      setUserRole,
+      checkingAuth
     }}>
       {children}
     </AuthContext.Provider>

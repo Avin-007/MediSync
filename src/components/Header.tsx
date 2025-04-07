@@ -4,7 +4,8 @@ import Logo from './Logo';
 import { Button } from './ui/button';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
-import { LogOut, LogIn, Home, User, Bell } from 'lucide-react';
+import { LogOut, LogIn, Home, User, Bell, Settings } from 'lucide-react';
+import NotificationsPanel from './dashboard/NotificationsPanel';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,6 +13,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@/components/ui/avatar";
 
 const Header: React.FC = () => {
   const navigate = useNavigate();
@@ -20,6 +26,10 @@ const Header: React.FC = () => {
   const handleLogout = () => {
     logout();
     navigate('/');
+  };
+
+  const getInitials = (name: string) => {
+    return name.split(' ').map(n => n[0]).join('').toUpperCase();
   };
 
   return (
@@ -50,29 +60,34 @@ const Header: React.FC = () => {
               </Button>
             </div>
             
+            <NotificationsPanel />
+            
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="outline" className="relative">
-                  <User size={18} />
-                  <span className="sr-only sm:not-sr-only sm:ml-2">Account</span>
-                  <span className="absolute top-0 right-0 h-2 w-2 bg-medisync-red rounded-full"></span>
+                <Button variant="outline" className="relative gap-2">
+                  <Avatar className="h-6 w-6">
+                    <AvatarImage src={user?.avatar} alt={user?.name} />
+                    <AvatarFallback>{user?.name ? getInitials(user.name) : "U"}</AvatarFallback>
+                  </Avatar>
+                  <span className="hidden md:inline">{user?.name}</span>
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-56">
                 <div className="p-2">
                   <p className="font-medium">{user?.name}</p>
                   <p className="text-sm text-muted-foreground">{user?.email}</p>
+                  <div className="mt-1 px-1 py-0.5 text-xs rounded bg-muted inline-block">
+                    {user?.role?.charAt(0).toUpperCase() + user?.role?.slice(1)}
+                  </div>
                 </div>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={() => navigate(`/${user?.role}`)}>
+                  <User size={16} className="mr-2" />
                   Dashboard
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => navigate('/notifications')}>
-                  <Bell size={16} className="mr-2" />
-                  Notifications
-                  <span className="ml-auto bg-medisync-red text-white rounded-full px-1.5 py-0.5 text-xs">
-                    2
-                  </span>
+                <DropdownMenuItem onClick={() => navigate('/settings')}>
+                  <Settings size={16} className="mr-2" />
+                  Settings
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={handleLogout} className="text-red-600">

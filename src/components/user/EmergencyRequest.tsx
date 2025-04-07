@@ -7,13 +7,19 @@ import { Textarea } from '../ui/textarea';
 import { RadioGroup, RadioGroupItem } from '../ui/radio-group';
 import { Label } from '../ui/label';
 import { useToast } from '@/hooks/use-toast';
-import { Ambulance, Users } from 'lucide-react';
+import { Ambulance, Users, MapPin, Clock } from 'lucide-react';
+import { Progress } from '../ui/progress';
 
-const EmergencyRequest: React.FC = () => {
+interface EmergencyRequestProps {
+  onSubmit?: (requestType: string) => void;
+}
+
+const EmergencyRequest: React.FC<EmergencyRequestProps> = ({ onSubmit }) => {
   const [requestType, setRequestType] = useState('ambulance');
   const [address, setAddress] = useState('');
   const [description, setDescription] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [progress, setProgress] = useState(0);
   const { toast } = useToast();
 
   const handleSubmit = () => {
@@ -27,22 +33,64 @@ const EmergencyRequest: React.FC = () => {
     }
 
     setIsSubmitting(true);
+    setProgress(0);
     
-    // Simulate API call
-    setTimeout(() => {
-      setIsSubmitting(false);
-      
+    // Simulate API call with progress
+    const interval = setInterval(() => {
+      setProgress(prev => {
+        const newProgress = prev + 20;
+        if (newProgress >= 100) {
+          clearInterval(interval);
+          setTimeout(() => {
+            setIsSubmitting(false);
+            if (onSubmit) {
+              onSubmit(requestType);
+            } else {
+              toast({
+                title: "Request Submitted",
+                description: requestType === 'ambulance' 
+                  ? "An ambulance has been dispatched to your location" 
+                  : "A home care nurse has been notified and will contact you shortly",
+              });
+            }
+          }, 500);
+        }
+        return newProgress;
+      });
+    }, 400);
+  };
+
+  // Try to get user's location
+  const handleGetLocation = () => {
+    if (navigator.geolocation) {
       toast({
-        title: "Request Submitted",
-        description: requestType === 'ambulance' 
-          ? "An ambulance has been dispatched to your location" 
-          : "A home care nurse has been notified and will contact you shortly",
+        title: "Locating",
+        description: "Accessing your current location...",
       });
       
-      // Reset form after successful submission
-      setAddress('');
-      setDescription('');
-    }, 2000);
+      navigator.geolocation.getCurrentPosition((position) => {
+        // In a real app, would reverse geocode to get address
+        // For demo, just show coordinates were obtained
+        toast({
+          title: "Location Found",
+          description: "Your location has been detected",
+          variant: "success",
+        });
+        setAddress("Current Location (detected)");
+      }, () => {
+        toast({
+          title: "Location Error",
+          description: "Unable to access your location. Please enter manually.",
+          variant: "destructive",
+        });
+      });
+    } else {
+      toast({
+        title: "Location Not Supported",
+        description: "Your browser doesn't support geolocation. Please enter manually.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
@@ -72,7 +120,19 @@ const EmergencyRequest: React.FC = () => {
         </RadioGroup>
         
         <div className="space-y-2">
-          <label className="text-sm font-medium">Your Address</label>
+          <label className="text-sm font-medium flex justify-between">
+            <span className="flex items-center gap-1">
+              <MapPin size={14} /> Your Address
+            </span>
+            <Button 
+              variant="link" 
+              className="text-xs p-0 h-auto" 
+              onClick={handleGetLocation}
+              type="button"
+            >
+              Use my location
+            </Button>
+          </label>
           <Input
             placeholder="Enter your current location"
             value={address}
@@ -89,16 +149,32 @@ const EmergencyRequest: React.FC = () => {
           />
         </div>
         
-        <Button 
-          className="w-full bg-medisync-red hover:bg-medisync-red/90"
-          disabled={isSubmitting}
-          onClick={handleSubmit}
-        >
-          {isSubmitting ? 'Submitting...' : 'Request Immediate Assistance'}
-        </Button>
+        {isSubmitting ? (
+          <div className="space-y-2 py-2">
+            <div className="flex justify-between text-sm">
+              <span>Locating nearest {requestType}</span>
+              <span>{progress}%</span>
+            </div>
+            <Progress value={progress} className="h-2" />
+            <p className="text-xs text-center text-gray-500 animate-pulse flex items-center justify-center">
+              <Clock size={12} className="mr-1" />
+              Processing your request...
+            </p>
+          </div>
+        ) : (
+          <Button 
+            className="w-full bg-medisync-red hover:bg-medisync-red/90"
+            disabled={isSubmitting}
+            onClick={handleSubmit}
+          >
+            {requestType === 'ambulance' ? 'Request Emergency Ambulance' : 'Request Nurse Home Visit'}
+          </Button>
+        )}
         
         <p className="text-sm text-gray-500 text-center">
-          For life-threatening emergencies, please also call emergency services directly.
+          {requestType === 'ambulance' 
+            ? 'For life-threatening emergencies, please also call emergency services directly.' 
+            : 'For urgent medical needs, consider requesting an ambulance instead.'}
         </p>
       </CardContent>
     </Card>

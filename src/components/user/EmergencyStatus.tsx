@@ -2,21 +2,44 @@
 import React from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '../ui/card';
 import { Progress } from '../ui/progress';
-import { PhoneCall, Clock, MapPin } from 'lucide-react';
+import { PhoneCall, Clock, MapPin, AlertTriangle } from 'lucide-react';
+import { Button } from '../ui/button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from '@/components/ui/dialog';
+import { useToast } from '@/hooks/use-toast';
 
 interface EmergencyStatusProps {
   active?: boolean;
   estimatedArrival?: string;
   responderName?: string;
   vehicleId?: string;
+  onCancel?: () => void;
 }
 
 const EmergencyStatus: React.FC<EmergencyStatusProps> = ({ 
   active = false,
   estimatedArrival = "10 minutes",
   responderName = "Dr. Sarah Johnson",
-  vehicleId = "AMB-12345"
+  vehicleId = "AMB-12345",
+  onCancel
 }) => {
+  const { toast } = useToast();
+  const [showDialog, setShowDialog] = React.useState(false);
+
+  const handleContactResponder = () => {
+    toast({
+      title: "Contact Initiated",
+      description: "Connecting you to the responder...",
+    });
+    // In a real app, would initiate a call or messaging session
+  };
+
+  const handleCancelEmergency = () => {
+    setShowDialog(false);
+    if (onCancel) {
+      onCancel();
+    }
+  };
+
   if (!active) {
     return (
       <Card className="shadow-md">
@@ -74,26 +97,46 @@ const EmergencyStatus: React.FC<EmergencyStatusProps> = ({
           </div>
         </div>
         
-        <div className="pt-2">
-          <Button className="w-full flex items-center justify-center gap-2">
+        <div className="pt-2 flex flex-col sm:flex-row gap-2">
+          <Button 
+            className="flex-1 flex items-center justify-center gap-2"
+            onClick={handleContactResponder}
+          >
             <PhoneCall size={16} />
             Contact Responder
           </Button>
+          
+          <Dialog open={showDialog} onOpenChange={setShowDialog}>
+            <DialogTrigger asChild>
+              <Button variant="outline" className="flex-1 flex items-center justify-center gap-2 text-red-600 hover:text-red-700">
+                <AlertTriangle size={16} />
+                Cancel Request
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Cancel Emergency Request?</DialogTitle>
+              </DialogHeader>
+              <p className="py-4">
+                Are you sure you want to cancel your emergency request? This should only be done if the emergency 
+                situation has been resolved or if this was an accidental request.
+              </p>
+              <DialogFooter>
+                <Button variant="outline" onClick={() => setShowDialog(false)}>
+                  No, Keep Request Active
+                </Button>
+                <Button 
+                  variant="destructive" 
+                  onClick={handleCancelEmergency}
+                >
+                  Yes, Cancel Request
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
         </div>
       </CardContent>
     </Card>
-  );
-};
-
-// Adding Button locally because we need it in this component
-const Button = ({ className = "", children, ...props }) => {
-  return (
-    <button
-      className={`bg-medisync-blue hover:bg-medisync-blue/90 text-white px-4 py-2 rounded-md ${className}`}
-      {...props}
-    >
-      {children}
-    </button>
   );
 };
 

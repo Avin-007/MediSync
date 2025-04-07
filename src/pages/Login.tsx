@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
@@ -19,7 +19,14 @@ const Login = () => {
   
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { login } = useAuth();
+  const { login, isAuthenticated, user } = useAuth();
+
+  // If already authenticated, redirect to the dashboard
+  useEffect(() => {
+    if (isAuthenticated && user?.role) {
+      navigate(`/${user.role}`);
+    }
+  }, [isAuthenticated, user, navigate]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -35,31 +42,7 @@ const Login = () => {
     setIsLoading(true);
     try {
       await login(email, password, role);
-      toast({
-        title: "Login Successful",
-        description: "You've been logged in successfully",
-      });
-      
-      // Redirect based on role
-      switch(role) {
-        case 'ambulance':
-          navigate('/ambulance');
-          break;
-        case 'hospital':
-          navigate('/hospital');
-          break;
-        case 'user':
-          navigate('/user');
-          break;
-        case 'traffic':
-          navigate('/traffic');
-          break;
-        case 'nurse':
-          navigate('/nurse');
-          break;
-        default:
-          navigate('/');
-      }
+      navigate(`/${role}`);
     } catch (error) {
       toast({
         title: "Login Failed",
@@ -73,7 +56,7 @@ const Login = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-      <Card className="w-full max-w-md">
+      <Card className="w-full max-w-md shadow-lg">
         <CardHeader className="space-y-2 text-center">
           <div className="flex justify-center mb-2">
             <Logo />
@@ -124,7 +107,7 @@ const Login = () => {
                 <Shield size={16} />
                 Login As
               </Label>
-              <RadioGroup value={role as string} onValueChange={(value) => setRole(value as UserRole)} className="flex flex-col space-y-2">
+              <RadioGroup value={role as string} onValueChange={(value) => setRole(value as UserRole)} className="flex flex-wrap gap-4">
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="user" id="user" />
                   <Label htmlFor="user">Patient/User</Label>
