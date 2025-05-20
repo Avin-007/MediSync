@@ -70,7 +70,7 @@ export default {
 					'light-blue': '#e6f0ff',
 					'light-red': '#ffe6e5',
 				},
-				// Nepal themed colors
+				// Enhanced Nepal themed colors
 				nepal: {
 					red: '#DC143C',  // Inspired by Nepal flag red
 					blue: '#003893', // Inspired by Nepal flag blue
@@ -82,6 +82,20 @@ export default {
 					'terracotta': '#E2725B',
 					'mustang-brown': '#754C24',
 					'rhododendron': '#FF66CC',
+					// Additional shades
+					'crimson-light': '#FFE8EC',
+					'crimson-dark': '#AB0D2E',
+					'royal-blue-light': '#E6ECF5',
+					'royal-blue-dark': '#002970',
+					'mountain-green-light': '#E6F0EC',
+					'mountain-green-dark': '#1B5E37',
+					'himalayan-white': '#FFFFFF',
+					'himalayan-mist': '#F0F0F0',
+					'prayer-flag-yellow': '#FFDE59',
+					'prayer-flag-blue': '#3498DB',
+					'prayer-flag-red': '#E74C3C',
+					'prayer-flag-green': '#2ECC71',
+					'prayer-flag-white': '#FFFFFF',
 				}
 			},
 			borderRadius: {
@@ -109,12 +123,27 @@ export default {
 				pulse: {
 					'0%, 100%': { opacity: '1' },
 					'50%': { opacity: '0.5' }
+				},
+				'fade-in': {
+					'0%': { opacity: '0', transform: 'translateY(10px)' },
+					'100%': { opacity: '1', transform: 'translateY(0)' }
+				},
+				'scale-in': {
+					'0%': { transform: 'scale(0.95)', opacity: '0' },
+					'100%': { transform: 'scale(1)', opacity: '1' }
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
-				'pulse-slow': 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite'
+				'pulse-slow': 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+				'fade-in': 'fade-in 0.5s ease-out forwards',
+				'scale-in': 'scale-in 0.4s ease-out forwards',
+			},
+			backgroundImage: {
+				'nepal-gradient': 'linear-gradient(135deg, #003893 0%, #DC143C 100%)',
+				'nepal-light-gradient': 'linear-gradient(135deg, #E6ECF5 0%, #FFE8EC 100%)',
+				'nepal-mountain': 'url("/images/nepal-mountains.jpg")',
 			}
 		}
 	},

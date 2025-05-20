@@ -5,6 +5,7 @@ import { Ambulance, Hospital, User, AlertTriangle, UserCog } from 'lucide-react'
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from './ui/button';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface RoleCardProps {
   title: string;
@@ -23,7 +24,7 @@ const RoleCard: React.FC<RoleCardProps> = ({ title, description, icon, path, col
       onClick={() => navigate(path)}
     >
       <div className="flex flex-col items-center text-center gap-4">
-        <div className={`p-3 rounded-full ${color.includes('blue') ? 'bg-medisync-light-blue' : 'bg-medisync-light-red'}`}>
+        <div className={`p-3 rounded-full ${color.includes('royal-blue') ? 'bg-nepal-royal-blue-light' : 'bg-nepal-crimson-light'}`}>
           {icon}
         </div>
         <h3 className="text-xl font-semibold">{title}</h3>
@@ -36,23 +37,24 @@ const RoleCard: React.FC<RoleCardProps> = ({ title, description, icon, path, col
 const RoleSelection: React.FC = () => {
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
+  const { t } = useLanguage();
 
   return (
     <div className="space-y-6">
       {!isAuthenticated && (
-        <div className="bg-yellow-50 border border-yellow-200 p-4 rounded-lg flex items-start gap-3 mb-6">
-          <AlertTriangle className="text-yellow-500 mt-1 flex-shrink-0" size={20} />
+        <div className="bg-nepal-crimson-light border border-nepal-crimson/20 p-4 rounded-lg flex items-start gap-3 mb-6">
+          <AlertTriangle className="text-nepal-crimson mt-1 flex-shrink-0" size={20} />
           <div className="space-y-2">
-            <h3 className="font-medium">Authentication Required</h3>
+            <h3 className="font-medium">{t('authenticationRequired')}</h3>
             <p className="text-sm text-gray-600">
-              For full access to all features, please login to your account.
+              {t('fullAccessFeatures')}
             </p>
             <Button 
               onClick={() => navigate('/login')}
-              variant="outline"
-              className="border-yellow-500 text-yellow-700 hover:bg-yellow-50"
+              variant="nepal-crimson-outline"
+              className="border-nepal-crimson/70"
             >
-              Go to Login
+              {t('goToLogin')}
             </Button>
           </div>
         </div>
@@ -60,39 +62,39 @@ const RoleSelection: React.FC = () => {
       
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <RoleCard
-          title="Ambulance Driver"
-          description="Access navigation, emergency routes, and traffic synchronization"
-          icon={<Ambulance size={32} className="text-medisync-blue" />}
+          title={t('ambulanceDriver')}
+          description={t('ambulanceDriverDesc')}
+          icon={<Ambulance size={32} className="text-nepal-royal-blue" />}
           path={isAuthenticated ? "/ambulance" : "/login"}
-          color="border-medisync-blue"
+          color="border-nepal-royal-blue"
         />
         <RoleCard
-          title="Hospital Admin"
-          description="Manage resources, coordinate ambulances, and monitor emergencies"
-          icon={<Hospital size={32} className="text-medisync-red" />}
+          title={t('hospitalAdmin')}
+          description={t('hospitalAdminDesc')}
+          icon={<Hospital size={32} className="text-nepal-crimson" />}
           path={isAuthenticated ? "/hospital" : "/login"}
-          color="border-medisync-red"
+          color="border-nepal-crimson"
         />
         <RoleCard
-          title="User / Patient"
-          description="Request ambulance services or medical assistance"
-          icon={<User size={32} className="text-medisync-blue" />}
+          title={t('userPatient')}
+          description={t('userPatientDesc')}
+          icon={<User size={32} className="text-nepal-royal-blue" />}
           path={isAuthenticated ? "/user" : "/login"}
-          color="border-medisync-blue"
+          color="border-nepal-royal-blue"
         />
         <RoleCard
-          title="Traffic Authority"
-          description="Manage traffic signals and clear routes for emergency vehicles"
-          icon={<AlertTriangle size={32} className="text-medisync-red" />}
+          title={t('trafficAuthority')}
+          description={t('trafficAuthorityDesc')}
+          icon={<AlertTriangle size={32} className="text-nepal-crimson" />}
           path={isAuthenticated ? "/traffic" : "/login"}
-          color="border-medisync-red"
+          color="border-nepal-crimson"
         />
         <RoleCard
-          title="Home Care Nurse"
-          description="Provide medical services through home visits and remote care"
-          icon={<UserCog size={32} className="text-medisync-blue" />}
+          title={t('homeCareNurse')}
+          description={t('homeCareNurseDesc')}
+          icon={<UserCog size={32} className="text-nepal-royal-blue" />}
           path={isAuthenticated ? "/nurse" : "/login"}
-          color="border-medisync-blue"
+          color="border-nepal-royal-blue"
         />
       </div>
     </div>
