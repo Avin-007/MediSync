@@ -9,7 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
 import { 
-  AlertCircle, Clock, BarChart, Brain, Stethoscope, ShoppingCart, Home, PhoneCall as Phone
+  AlertCircle, Clock, BarChart, Brain, Stethoscope, ShoppingCart, Home, PhoneCall 
 } from 'lucide-react';
 import DashboardLayout from '@/components/dashboard/DashboardLayout';
 import { useAuth } from '@/contexts/AuthContext';
