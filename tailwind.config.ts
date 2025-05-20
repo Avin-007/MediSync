@@ -69,6 +69,19 @@ export default {
 					red: '#ff3b30',
 					'light-blue': '#e6f0ff',
 					'light-red': '#ffe6e5',
+				},
+				// Nepal themed colors
+				nepal: {
+					red: '#DC143C',  // Inspired by Nepal flag red
+					blue: '#003893', // Inspired by Nepal flag blue
+					'crimson': '#DC143C',
+					'royal-blue': '#003893',
+					'mountain-green': '#2E8B57',
+					'himalayan-snow': '#F8F8FF',
+					'saffron': '#F4C430',
+					'terracotta': '#E2725B',
+					'mustang-brown': '#754C24',
+					'rhododendron': '#FF66CC',
 				}
 			},
 			borderRadius: {

@@ -4,8 +4,10 @@ import Logo from './Logo';
 import { Button } from './ui/button';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { LogOut, LogIn, Home, User, Bell, Settings } from 'lucide-react';
 import NotificationsPanel from './dashboard/NotificationsPanel';
+import LanguageSwitcher from './LanguageSwitcher';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -22,6 +24,7 @@ import {
 const Header: React.FC = () => {
   const navigate = useNavigate();
   const { user, isAuthenticated, logout } = useAuth();
+  const { t } = useLanguage();
 
   const handleLogout = () => {
     logout();
@@ -42,7 +45,7 @@ const Header: React.FC = () => {
           className="hidden sm:flex"
         >
           <Home size={18} className="mr-2" />
-          Home
+          {t('home')}
         </Button>
         
         {isAuthenticated ? (
@@ -56,11 +59,13 @@ const Header: React.FC = () => {
                   }
                 }}
               >
-                Dashboard
+                {t('dashboard')}
               </Button>
             </div>
             
             <NotificationsPanel />
+            
+            <LanguageSwitcher />
             
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -83,28 +88,31 @@ const Header: React.FC = () => {
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={() => navigate(`/${user?.role}`)}>
                   <User size={16} className="mr-2" />
-                  Dashboard
+                  {t('dashboard')}
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => navigate('/settings')}>
                   <Settings size={16} className="mr-2" />
-                  Settings
+                  {t('settings')}
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={handleLogout} className="text-red-600">
                   <LogOut size={16} className="mr-2" />
-                  Logout
+                  {t('logout')}
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </>
         ) : (
-          <Button 
-            onClick={() => navigate('/login')}
-            className="bg-medisync-blue hover:bg-medisync-blue/90"
-          >
-            <LogIn size={18} className="mr-2" />
-            Login
-          </Button>
+          <>
+            <LanguageSwitcher />
+            <Button 
+              onClick={() => navigate('/login')}
+              className="bg-nepal-royal-blue hover:bg-nepal-royal-blue/90"
+            >
+              <LogIn size={18} className="mr-2" />
+              {t('login')}
+            </Button>
+          </>
         )}
       </div>
     </header>
