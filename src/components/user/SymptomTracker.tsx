@@ -1,9 +1,7 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import { SliderProps } from '@/components/ui/slider';
 import { Slider } from '@/components/ui/slider';
 import { CheckCircle, Clock, PlusCircle, Brain, MessageCircle, AlignLeft, MoveUpRight } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
