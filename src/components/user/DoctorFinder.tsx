@@ -1,4 +1,3 @@
-
 import React, { useState, useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -7,7 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { Search, MapPin, Star, Calendar, Filter, MessageSquare, Phone, Video } from 'lucide-react';
+import { Search, MapPin, Star, Calendar, Filter, MessageSquare, Phone, Video, X } from 'lucide-react';
 import {
   Select,
   SelectContent,
