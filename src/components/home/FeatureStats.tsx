@@ -2,6 +2,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Users, Hospital, Ambulance, Phone } from 'lucide-react';
+import { LucideIcon } from 'lucide-react';
 
 export const FeatureStats = () => {
   const { t } = useLanguage();
@@ -70,14 +71,20 @@ export const FeatureStats = () => {
 };
 
 interface StatCardProps {
-  icon: React.ComponentType<{ size?: number; className?: string }>;
+  icon: LucideIcon;
   value: string;
   label: string;
   isInView: boolean;
   delay: number;
 }
 
-const StatCard: React.FC<StatCardProps> = ({ icon: Icon, value, label, isInView, delay }) => {
+const StatCard: React.FC<StatCardProps> = ({ 
+  icon: Icon, 
+  value, 
+  label, 
+  isInView, 
+  delay 
+}) => {
   return (
     <div 
       className={`flex flex-col items-center justify-center p-6 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20 transform transition-all duration-700 ease-out ${

@@ -5,15 +5,7 @@ import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Clock } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
-
-interface Contact {
-  id: string;
-  name: string;
-  role: string;
-  avatar?: string;
-  online: boolean;
-  lastSeen?: string;
-}
+import { Contact } from './types';
 
 interface ContactListProps {
   contacts: Contact[];
@@ -46,7 +38,7 @@ const ContactList: React.FC<ContactListProps> = ({
             <div 
               key={contact.id}
               className="p-3 flex items-center gap-3 hover:bg-muted/20 cursor-pointer transition-colors"
-              onClick={() => onContactSelect(contact)}
+              onClick={() => onContactSelect(contact.id)}
             >
               <div className="relative">
                 <Avatar>

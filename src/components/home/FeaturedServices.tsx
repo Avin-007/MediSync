@@ -4,6 +4,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { Ambulance, Calendar, HeartPulse, MessageSquare, Pill, Wallet } from 'lucide-react';
+import { LucideIcon } from 'lucide-react';
 
 export const FeaturedServices = () => {
   const { t } = useLanguage();
@@ -86,14 +87,20 @@ export const FeaturedServices = () => {
 };
 
 interface ServiceCardProps {
-  icon: React.ComponentType<{ size?: number; className?: string }>;
+  icon: LucideIcon;
   title: string;
   description: string;
   color: string;
   delay: number;
 }
 
-const ServiceCard: React.FC<ServiceCardProps> = ({ icon: Icon, title, description, color, delay }) => {
+const ServiceCard: React.FC<ServiceCardProps> = ({ 
+  icon: Icon, 
+  title, 
+  description, 
+  color, 
+  delay 
+}) => {
   return (
     <Card 
       className="border-none shadow-lg hover:shadow-xl transition-all duration-300 touch-effect hover:-translate-y-2 animate-on-scroll"

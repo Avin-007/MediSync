@@ -1,7 +1,11 @@
 
 import React from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { Ambulance, Bell, HeartPulse, Hospital, MessageSquare, Shield, Stethoscope, Traffic, User, Wallet } from 'lucide-react';
+import { 
+  Ambulance, Bell, HeartPulse, Hospital, MessageSquare, 
+  Shield, Stethoscope, User, Wallet, Navigation 
+} from 'lucide-react';
+import { LucideIcon } from 'lucide-react';
 
 const SystemFlowDiagram = () => {
   const { t } = useLanguage();
@@ -48,7 +52,7 @@ const SystemFlowDiagram = () => {
           />
           
           <FlowNode 
-            icon={Traffic}
+            icon={Navigation}
             title={t('trafficAuthority')} 
             features={[t('routeClearing'), t('congestionManagement'), t('emergencyCoordination')]}
             color="from-amber-500 to-amber-600"
@@ -75,7 +79,7 @@ const SystemFlowDiagram = () => {
 };
 
 interface FlowNodeProps {
-  icon: React.ComponentType<{ size?: number; className?: string }>;
+  icon: LucideIcon;
   title: string;
   features: string[];
   color: string;
@@ -103,7 +107,7 @@ const FlowNode: React.FC<FlowNodeProps> = ({ icon: Icon, title, features, color 
 };
 
 interface FeatureNodeProps {
-  icon: React.ComponentType<{ size?: number; className?: string }>;
+  icon: LucideIcon;
   title: string;
 }
 

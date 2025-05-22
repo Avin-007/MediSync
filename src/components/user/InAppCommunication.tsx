@@ -146,8 +146,11 @@ const InAppCommunication = () => {
     return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   };
 
-  const handleContactSelect = (contact: Contact) => {
-    setActiveContact(contact);
+  const handleContactSelect = (contactId: string) => {
+    const selectedContact = contacts.find(contact => contact.id === contactId);
+    if (selectedContact) {
+      setActiveContact(selectedContact);
+    }
   };
 
   return (
