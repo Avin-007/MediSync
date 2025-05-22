@@ -1,30 +1,33 @@
-
 import React from 'react';
 import Header from '@/components/Header';
 import RoleSelection from '@/components/RoleSelection';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import FlowDiagram from '@/components/FlowDiagram';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, Ambulance, Activity, Map, Shield, UserCheck, HeartPulse, Pill, Stethoscope, Brain, ShoppingCart, HomeIcon, CalendarCheck, AlertCircle, Mountain, Flag } from 'lucide-react';
+import { ArrowRight, Ambulance, Activity, Map, Shield, UserCheck, HeartPulse, Pill, 
+  Stethoscope, Brain, ShoppingCart, HomeIcon, CalendarCheck, 
+  AlertCircle, Mountain, Flag, Wallet, Phone, MessageSquare, Users } from 'lucide-react';
 import { LucideProps } from 'lucide-react';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 const Index = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
       <Header />
-      <main className="container mx-auto py-12 px-4">
-        <div className="max-w-6xl mx-auto space-y-16">
+      <main className="container mx-auto py-8 px-4">
+        <div className="max-w-7xl mx-auto space-y-16">
           {/* Hero section */}
           <div className="flex flex-col-reverse md:flex-row md:items-center md:gap-12">
             <div className="md:w-1/2 space-y-6 mt-8 md:mt-0">
               <div>
                 <h1 className="text-4xl md:text-5xl font-bold leading-tight">
-                  <span className="text-nepal-royal-blue">Medi</span>
-                  <span className="text-nepal-crimson">Sync</span>
-                  <span className="block mt-2">{t('completeHealthcare')}</span>
+                  <span className="text-nepal-royal-blue">मेडि</span>
+                  <span className="text-nepal-crimson">सिंक</span>
+                  <span className="text-nepal-royal-blue block mt-2">{t('completeHealthcare')}</span>
                 </h1>
                 <p className="mt-4 text-gray-600 text-lg">
                   {t('healthcareDescription')}
@@ -44,7 +47,9 @@ const Index = () => {
                 <Badge icon={Brain} text={t('aiPowered')} />
                 <Badge icon={Map} text={t('realTimeTracking')} />
                 <Badge icon={AlertCircle} text={t('emergencyResponse')} />
-                <Badge icon={ShoppingCart} text={t('medicationDelivery')} />
+                <Badge icon={Phone} text={t('inAppCalling')} />
+                <Badge icon={MessageSquare} text={t('inAppMessaging')} />
+                <Badge icon={Wallet} text={t('healthCard')} />
               </div>
             </div>
             <div className="md:w-1/2 relative">
@@ -80,7 +85,19 @@ const Index = () => {
               </p>
             </div>
           </div>
-
+          
+          {/* Flow Diagram */}
+          <div className="pt-8">
+            <h2 className="text-2xl md:text-3xl font-bold text-center mb-4">
+              {t('howMediSyncWorks')}
+            </h2>
+            <p className="text-center text-gray-500 mb-8 max-w-2xl mx-auto">
+              {t('ourPlatformConnects')}
+            </p>
+            
+            <FlowDiagram />
+          </div>
+          
           {/* Core features section */}
           <div className="pt-8">
             <h2 className="text-2xl md:text-3xl font-bold text-center mb-2">
@@ -92,9 +109,9 @@ const Index = () => {
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <FeatureCard 
-                title={t('aiHealthAssistant')} 
-                description={t('aiHealthAssistantDesc')}
-                Icon={Brain}
+                title={t('uniqueHealthID')}
+                description={t('uniqueHealthIDDescription')}
+                Icon={Shield}
                 className="border-b-nepal-royal-blue"
               />
               <FeatureCard 
@@ -104,67 +121,33 @@ const Index = () => {
                 className="border-b-nepal-crimson"
               />
               <FeatureCard 
+                title={t('healthCardFeature')} 
+                description={t('healthCardFeatureDesc')}
+                Icon={Wallet}
+                className="border-b-nepal-mountain-green"
+              />
+              <FeatureCard 
                 title={t('medicationMarketplace')} 
                 description={t('medicationMarketplaceDesc')}
                 Icon={Pill}
+                className="border-b-nepal-royal-blue"
+              />
+              <FeatureCard 
+                title={t('inAppCommunication')} 
+                description={t('inAppCommunicationDesc')}
+                Icon={MessageSquare}
+                className="border-b-nepal-crimson"
+              />
+              <FeatureCard 
+                title={t('aiAssistance')} 
+                description={t('aiAssistanceDesc')}
+                Icon={Brain}
                 className="border-b-nepal-mountain-green"
               />
             </div>
           </div>
-          
-          {/* How it works section */}
-          <div className="py-8">
-            <h2 className="text-2xl md:text-3xl font-bold text-center mb-2">
-              {t('howMediSyncWorks')}
-            </h2>
-            <p className="text-center text-gray-500 mb-12 max-w-2xl mx-auto">
-              {t('ourPlatformConnects')}
-            </p>
-            
-            <div className="flex flex-col md:flex-row gap-8 items-center">
-              <div className="md:w-1/2 space-y-8">
-                <StepCard 
-                  number="01"
-                  title={t('trackYourHealth')}
-                  description={t('trackYourHealthDesc')}
-                />
-                <StepCard 
-                  number="02"
-                  title={t('connectWithProfessionals')}
-                  description={t('connectWithProfessionalsDesc')}
-                />
-                <StepCard 
-                  number="03"
-                  title={t('manageMediactions')}
-                  description={t('manageMediactionsDesc')}
-                />
-                <StepCard 
-                  number="04"
-                  title={t('emergencyResponse')}
-                  description={t('emergencyResponseDesc')}
-                />
-              </div>
-              
-              <div className="md:w-1/2">
-                <div className="relative">
-                  <div className="absolute -right-4 -bottom-4 w-full h-full border-2 border-nepal-royal-blue rounded-2xl"></div>
-                  <Card className="overflow-hidden">
-                    <AspectRatio ratio={4/3}>
-                      <div className="w-full h-full bg-gradient-to-br from-nepal-royal-blue/20 to-nepal-crimson/20 flex items-center justify-center">
-                        <img 
-                          src="https://images.unsplash.com/photo-1526947425960-945c6e72858f?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" 
-                          alt="Healthcare in Nepal" 
-                          className="w-full h-full object-cover opacity-80"
-                        />
-                      </div>
-                    </AspectRatio>
-                  </Card>
-                </div>
-              </div>
-            </div>
-          </div>
 
-          {/* Solutions for stakeholders */}
+          {/* User roles section */}
           <div className="py-8">
             <h2 className="text-2xl md:text-3xl font-bold text-center mb-2">
               {t('solutionsForStakeholders')}
@@ -173,36 +156,165 @@ const Index = () => {
               {t('mediSyncProvidesTools')}
             </p>
             
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              <RoleHighlightCard
-                title={t('patients')}
-                description={t('patientsDesc')}
-                Icon={UserCheck}
-                bgClass="bg-blue-50"
-                iconClass="text-nepal-royal-blue"
-              />
-              <RoleHighlightCard
-                title={t('doctorsAndNurses')}
-                description={t('doctorsAndNursesDesc')}
-                Icon={Stethoscope}
-                bgClass="bg-green-50"
-                iconClass="text-nepal-mountain-green"
-              />
-              <RoleHighlightCard
-                title={t('emergencyServices')}
-                description={t('emergencyServicesRoleDesc')}
-                Icon={Ambulance}
-                bgClass="bg-red-50"
-                iconClass="text-nepal-crimson"
-              />
-              <RoleHighlightCard
-                title={t('hospitalsAndPharmacies')}
-                description={t('hospitalsAndPharmaciesDesc')}
-                Icon={HomeIcon}
-                bgClass="bg-purple-50"
-                iconClass="text-purple-500"
-              />
-            </div>
+            <Tabs defaultValue="patients" className="mx-auto">
+              <TabsList className="grid grid-cols-2 md:grid-cols-5 mb-8">
+                <TabsTrigger value="patients" className="gap-2">
+                  <UserCheck size={16} />
+                  {t('patients')}
+                </TabsTrigger>
+                <TabsTrigger value="healthcare" className="gap-2">
+                  <Stethoscope size={16} />
+                  {t('healthcareProfessionals')}
+                </TabsTrigger>
+                <TabsTrigger value="emergency" className="gap-2">
+                  <Ambulance size={16} />
+                  {t('emergencyServices')}
+                </TabsTrigger>
+                <TabsTrigger value="hospital" className="gap-2">
+                  <Hospital size={16} />
+                  {t('hospitals')}
+                </TabsTrigger>
+                <TabsTrigger value="government" className="gap-2">
+                  <Shield size={16} />
+                  {t('government')}
+                </TabsTrigger>
+              </TabsList>
+              
+              <TabsContent value="patients">
+                <Card className="border-nepal-royal-blue">
+                  <div className="md:grid md:grid-cols-5 items-center">
+                    <div className="col-span-2 bg-nepal-royal-blue/10 p-6 h-full flex flex-col justify-center">
+                      <div className="mb-4">
+                        <UserCheck size={48} className="text-nepal-royal-blue" />
+                      </div>
+                      <h3 className="text-2xl font-bold text-gray-900 mb-2">{t('patients')}</h3>
+                      <p className="text-gray-600">{t('patientsDetailedDesc')}</p>
+                    </div>
+                    <div className="col-span-3 p-6">
+                      <h4 className="text-lg font-semibold mb-4">{t('patientFeatures')}</h4>
+                      <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <FeatureListItem icon={HeartPulse} text={t('healthMonitoring')} />
+                        <FeatureListItem icon={CalendarCheck} text={t('appointmentBooking')} />
+                        <FeatureListItem icon={Pill} text={t('medicationReminders')} />
+                        <FeatureListItem icon={Wallet} text={t('digitalHealthCard')} />
+                        <FeatureListItem icon={AlertCircle} text={t('emergencyAssistance')} />
+                        <FeatureListItem icon={MessageSquare} text={t('doctorConsultations')} />
+                        <FeatureListItem icon={Map} text={t('nearbyHealthFacilities')} />
+                        <FeatureListItem icon={Shield} text={t('secureHealthRecords')} />
+                      </ul>
+                    </div>
+                  </div>
+                </Card>
+              </TabsContent>
+              
+              <TabsContent value="healthcare">
+                <Card className="border-nepal-crimson">
+                  <div className="md:grid md:grid-cols-5 items-center">
+                    <div className="col-span-2 bg-nepal-crimson/10 p-6 h-full flex flex-col justify-center">
+                      <div className="mb-4">
+                        <Stethoscope size={48} className="text-nepal-crimson" />
+                      </div>
+                      <h3 className="text-2xl font-bold text-gray-900 mb-2">{t('healthcareProfessionals')}</h3>
+                      <p className="text-gray-600">{t('healthcareProfessionalsDetailedDesc')}</p>
+                    </div>
+                    <div className="col-span-3 p-6">
+                      <h4 className="text-lg font-semibold mb-4">{t('healthcareFeatures')}</h4>
+                      <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <FeatureListItem icon={Users} text={t('patientManagement')} />
+                        <FeatureListItem icon={CalendarCheck} text={t('scheduleManagement')} />
+                        <FeatureListItem icon={MessageSquare} text={t('secureMessaging')} />
+                        <FeatureListItem icon={Brain} text={t('aiDiagnosticAssistance')} />
+                        <FeatureListItem icon={Shield} text={t('medicalRecordAccess')} />
+                        <FeatureListItem icon={Phone} text={t('telemedicineTools')} />
+                        <FeatureListItem icon={Activity} text={t('patientMonitoring')} />
+                        <FeatureListItem icon={HomeIcon} text={t('remoteConsultations')} />
+                      </ul>
+                    </div>
+                  </div>
+                </Card>
+              </TabsContent>
+              
+              <TabsContent value="emergency">
+                <Card className="border-nepal-mountain-green">
+                  <div className="md:grid md:grid-cols-5 items-center">
+                    <div className="col-span-2 bg-green-50 p-6 h-full flex flex-col justify-center">
+                      <div className="mb-4">
+                        <Ambulance size={48} className="text-green-600" />
+                      </div>
+                      <h3 className="text-2xl font-bold text-gray-900 mb-2">{t('emergencyServices')}</h3>
+                      <p className="text-gray-600">{t('emergencyServicesDetailedDesc')}</p>
+                    </div>
+                    <div className="col-span-3 p-6">
+                      <h4 className="text-lg font-semibold mb-4">{t('emergencyFeatures')}</h4>
+                      <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <FeatureListItem icon={Map} text={t('realTimeTracking')} />
+                        <FeatureListItem icon={AlertCircle} text={t('priorityDispatch')} />
+                        <FeatureListItem icon={Brain} text={t('smartRouting')} />
+                        <FeatureListItem icon={Shield} text={t('patientDataAccess')} />
+                        <FeatureListItem icon={Activity} text={t('vitalSignsMonitoring')} />
+                        <FeatureListItem icon={Hospital} text={t('hospitalCoordination')} />
+                        <FeatureListItem icon={MessageSquare} text={t('instantCommunication')} />
+                        <FeatureListItem icon={Users} text={t('teamCoordination')} />
+                      </ul>
+                    </div>
+                  </div>
+                </Card>
+              </TabsContent>
+              
+              <TabsContent value="hospital">
+                <Card className="border-blue-500">
+                  <div className="md:grid md:grid-cols-5 items-center">
+                    <div className="col-span-2 bg-blue-50 p-6 h-full flex flex-col justify-center">
+                      <div className="mb-4">
+                        <Hospital size={48} className="text-blue-600" />
+                      </div>
+                      <h3 className="text-2xl font-bold text-gray-900 mb-2">{t('hospitals')}</h3>
+                      <p className="text-gray-600">{t('hospitalsDetailedDesc')}</p>
+                    </div>
+                    <div className="col-span-3 p-6">
+                      <h4 className="text-lg font-semibold mb-4">{t('hospitalFeatures')}</h4>
+                      <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <FeatureListItem icon={Users} text={t('patientFlowManagement')} />
+                        <FeatureListItem icon={Wallet} text={t('digitalPayments')} />
+                        <FeatureListItem icon={Shield} text={t('medicalRecordSystem')} />
+                        <FeatureListItem icon={Brain} text={t('resourceOptimization')} />
+                        <FeatureListItem icon={AlertCircle} text={t('emergencyPreparedness')} />
+                        <FeatureListItem icon={Activity} text={t('performanceAnalytics')} />
+                        <FeatureListItem icon={Stethoscope} text={t('staffManagement')} />
+                        <FeatureListItem icon={ShoppingCart} text={t('inventoryTracking')} />
+                      </ul>
+                    </div>
+                  </div>
+                </Card>
+              </TabsContent>
+              
+              <TabsContent value="government">
+                <Card className="border-purple-500">
+                  <div className="md:grid md:grid-cols-5 items-center">
+                    <div className="col-span-2 bg-purple-50 p-6 h-full flex flex-col justify-center">
+                      <div className="mb-4">
+                        <Shield size={48} className="text-purple-600" />
+                      </div>
+                      <h3 className="text-2xl font-bold text-gray-900 mb-2">{t('government')}</h3>
+                      <p className="text-gray-600">{t('governmentDetailedDesc')}</p>
+                    </div>
+                    <div className="col-span-3 p-6">
+                      <h4 className="text-lg font-semibold mb-4">{t('governmentFeatures')}</h4>
+                      <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <FeatureListItem icon={Activity} text={t('populationHealthMetrics')} />
+                        <FeatureListItem icon={AlertCircle} text={t('diseaseOutbreakMonitoring')} />
+                        <FeatureListItem icon={Shield} text={t('nationalHealthID')} />
+                        <FeatureListItem icon={Brain} text={t('healthcareAnalytics')} />
+                        <FeatureListItem icon={Map} text={t('resourceDistribution')} />
+                        <FeatureListItem icon={Flag} text={t('policyImplementation')} />
+                        <FeatureListItem icon={Users} text={t('citizenHealthTracking')} />
+                        <FeatureListItem icon={Mountain} text={t('remoteAreaCoverage')} />
+                      </ul>
+                    </div>
+                  </div>
+                </Card>
+              </TabsContent>
+            </Tabs>
           </div>
           
           {/* Nepal-specific features */}
@@ -214,28 +326,34 @@ const Index = () => {
               {t('designedForNepalDesc')}
             </p>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <Card className="bg-gradient-to-br from-nepal-himalayan-snow to-white overflow-hidden border-nepal-royal-blue">
-                <CardContent className="p-6 flex flex-col md:flex-row gap-6 items-center">
-                  <div className="w-20 h-20 md:w-24 md:h-24 flex items-center justify-center rounded-full bg-nepal-royal-blue/10 flex-shrink-0">
+                <CardContent className="p-6 flex flex-col items-center text-center">
+                  <div className="w-20 h-20 flex items-center justify-center rounded-full bg-nepal-royal-blue/10 flex-shrink-0 mb-4">
                     <Mountain size={32} className="text-nepal-royal-blue" />
                   </div>
-                  <div>
-                    <h3 className="text-xl font-medium mb-2">{t('remoteRegionAccess')}</h3>
-                    <p className="text-gray-600">{t('remoteRegionAccessDesc')}</p>
-                  </div>
+                  <h3 className="text-xl font-medium mb-2">{t('remoteRegionAccess')}</h3>
+                  <p className="text-gray-600">{t('remoteRegionAccessDesc')}</p>
                 </CardContent>
               </Card>
               
               <Card className="bg-gradient-to-br from-nepal-himalayan-snow to-white overflow-hidden border-nepal-crimson">
-                <CardContent className="p-6 flex flex-col md:flex-row gap-6 items-center">
-                  <div className="w-20 h-20 md:w-24 md:h-24 flex items-center justify-center rounded-full bg-nepal-crimson/10 flex-shrink-0">
+                <CardContent className="p-6 flex flex-col items-center text-center">
+                  <div className="w-20 h-20 flex items-center justify-center rounded-full bg-nepal-crimson/10 flex-shrink-0 mb-4">
                     <AlertCircle size={32} className="text-nepal-crimson" />
                   </div>
-                  <div>
-                    <h3 className="text-xl font-medium mb-2">{t('disasterResponseInfrastructure')}</h3>
-                    <p className="text-gray-600">{t('disasterResponseInfrastructureDesc')}</p>
+                  <h3 className="text-xl font-medium mb-2">{t('disasterResponseInfrastructure')}</h3>
+                  <p className="text-gray-600">{t('disasterResponseInfrastructureDesc')}</p>
+                </CardContent>
+              </Card>
+              
+              <Card className="bg-gradient-to-br from-nepal-himalayan-snow to-white overflow-hidden border-nepal-mountain-green">
+                <CardContent className="p-6 flex flex-col items-center text-center">
+                  <div className="w-20 h-20 flex items-center justify-center rounded-full bg-green-100 flex-shrink-0 mb-4">
+                    <Wallet size={32} className="text-green-600" />
                   </div>
+                  <h3 className="text-xl font-medium mb-2">{t('digitalHealthCard')}</h3>
+                  <p className="text-gray-600">{t('digitalHealthCardDesc')}</p>
                 </CardContent>
               </Card>
             </div>
@@ -263,6 +381,28 @@ const Index = () => {
   );
 };
 
+// Helper components to keep the file organized
+const Hospital = (props: LucideProps) => (
+  <svg
+    {...props}
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <path d="M3 9h18v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"></path>
+    <path d="m9 21v-4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v4"></path>
+    <path d="M3 9V6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v3"></path>
+    <path d="M10 2v4"></path>
+    <path d="M14 2v4"></path>
+  </svg>
+);
+
 interface FeatureCardProps {
   title: string;
   description: string;
@@ -284,43 +424,17 @@ const FeatureCard: React.FC<FeatureCardProps> = ({ title, description, Icon, cla
   );
 };
 
-interface RoleHighlightCardProps {
-  title: string;
-  description: string;
-  Icon: React.ComponentType<LucideProps>;
-  bgClass: string;
-  iconClass: string;
+interface FeatureListItemProps {
+  icon: React.ComponentType<LucideProps>;
+  text: string;
 }
 
-const RoleHighlightCard: React.FC<RoleHighlightCardProps> = ({ title, description, Icon, bgClass, iconClass }) => {
+const FeatureListItem: React.FC<FeatureListItemProps> = ({ icon: Icon, text }) => {
   return (
-    <div className="bg-white p-6 rounded-lg shadow hover:shadow-md transition-all">
-      <div className={`w-12 h-12 rounded-full ${bgClass} flex items-center justify-center mb-4`}>
-        <Icon size={24} className={iconClass} />
-      </div>
-      <h3 className="text-lg font-medium mb-2">{title}</h3>
-      <p className="text-gray-500 text-sm">{description}</p>
-    </div>
-  );
-};
-
-interface StepCardProps {
-  number: string;
-  title: string;
-  description: string;
-}
-
-const StepCard: React.FC<StepCardProps> = ({ number, title, description }) => {
-  return (
-    <div className="flex gap-4 items-start">
-      <div className="w-10 h-10 rounded-full bg-nepal-royal-blue text-white flex items-center justify-center font-bold shrink-0">
-        {number}
-      </div>
-      <div>
-        <h3 className="text-lg font-medium mb-1">{title}</h3>
-        <p className="text-gray-500 text-sm">{description}</p>
-      </div>
-    </div>
+    <li className="flex items-start gap-2">
+      <Icon size={16} className="mt-1 text-nepal-royal-blue" />
+      <span>{text}</span>
+    </li>
   );
 };
 
