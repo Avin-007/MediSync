@@ -1,12 +1,14 @@
 
 import React, { useState } from 'react';
 import Header from '@/components/Header';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { Card } from '@/components/ui/card';
-import { BarChart3, Bell, Calendar, ChevronLeft, ChevronRight, LayoutDashboard, MapPin, Menu } from 'lucide-react';
+import { BarChart3, Bell, Calendar, ChevronLeft, ChevronRight, LayoutDashboard, MapPin, Menu, User, Settings, MessageSquare } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { cn } from '@/lib/utils';
+import { useToast } from '@/hooks/use-toast';
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -22,8 +24,10 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   headerActions
 }) => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { user, isAuthenticated } = useAuth();
   const [collapsed, setCollapsed] = useState(false);
+  const { toast } = useToast();
 
   // Redirect to login if not authenticated
   React.useEffect(() => {
@@ -33,12 +37,35 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   }, [isAuthenticated, navigate]);
 
   const sidebarItems = [
-    { name: "Dashboard", icon: <LayoutDashboard size={20} />, active: true },
-    { name: "Analytics", icon: <BarChart3 size={20} />, active: false },
-    { name: "Schedule", icon: <Calendar size={20} />, active: false },
-    { name: "Reminders", icon: <Bell size={20} />, active: false },
-    { name: "Location", icon: <MapPin size={20} />, active: false },
+    { name: "Dashboard", icon: <LayoutDashboard size={20} />, path: `/${user?.role}` },
+    { name: "Analytics", icon: <BarChart3 size={20} />, path: `/${user?.role}/analytics` },
+    { name: "Schedule", icon: <Calendar size={20} />, path: `/${user?.role}/schedule` },
+    { name: "Reminders", icon: <Bell size={20} />, path: `/${user?.role}/reminders` },
+    { name: "Location", icon: <MapPin size={20} />, path: `/${user?.role}/location` },
+    { name: "Messages", icon: <MessageSquare size={20} />, path: `/${user?.role}/messages` },
+    { name: "Profile", icon: <User size={20} />, path: `/settings` },
+    { name: "Settings", icon: <Settings size={20} />, path: `/settings` },
   ];
+
+  const handleNavigation = (path: string) => {
+    // Show toast for routes that aren't fully implemented yet
+    const implementedRoutes = [`/${user?.role}`, '/settings'];
+    
+    if (implementedRoutes.includes(path)) {
+      navigate(path);
+    } else {
+      toast({
+        title: "Coming Soon",
+        description: "This feature will be available in the next update.",
+        duration: 3000,
+      });
+      
+      // Navigate to dashboard for now
+      if (path !== location.pathname) {
+        navigate(`/${user?.role}`);
+      }
+    }
+  };
 
   if (!isAuthenticated) {
     return (
@@ -66,16 +93,24 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
 
       <div className="flex-1 py-4">
         <nav>
-          {sidebarItems.map((item, index) => (
-            <Button
-              key={index}
-              variant={item.active ? "default" : "ghost"}
-              className={`w-full justify-${collapsed ? 'center' : 'start'} mb-1 ${item.active ? 'bg-medisync-blue hover:bg-medisync-blue/90' : ''}`}
-            >
-              <span>{item.icon}</span>
-              {!collapsed && <span className="ml-2">{item.name}</span>}
-            </Button>
-          ))}
+          {sidebarItems.map((item) => {
+            const isActive = location.pathname === item.path;
+            
+            return (
+              <Button
+                key={item.name}
+                variant={isActive ? "default" : "ghost"}
+                className={cn(
+                  `w-full justify-${collapsed ? 'center' : 'start'} mb-1`,
+                  isActive ? 'bg-medisync-blue hover:bg-medisync-blue/90' : ''
+                )}
+                onClick={() => handleNavigation(item.path)}
+              >
+                <span>{item.icon}</span>
+                {!collapsed && <span className="ml-2">{item.name}</span>}
+              </Button>
+            );
+          })}
         </nav>
       </div>
     </div>
