@@ -10,7 +10,8 @@ import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
 import { 
   AlertCircle, Clock, BarChart, Brain, Stethoscope, ShoppingCart, PhoneCall, 
-  Droplet, Users, Wallet, CloudRain, CalendarCheck, MessageSquare, Bell
+  Droplet, Users, Wallet, CloudRain, CalendarCheck, MessageSquare, Bell,
+  Plane, Shield, Activity, Heart, TrendingUp, Zap
 } from 'lucide-react';
 import DashboardLayout from '@/components/dashboard/DashboardLayout';
 import { useAuth } from '@/contexts/AuthContext';
@@ -29,6 +30,15 @@ import HealthEvents from '@/components/user/HealthEvents';
 import AnalyticsWidget from '@/components/dashboard/AnalyticsWidget';
 import RemindersWidget from '@/components/dashboard/RemindersWidget';
 import ScheduleWidget from '@/components/dashboard/ScheduleWidget';
+
+// Import new AI and innovative features
+import HealthPredictor from '@/components/ai/HealthPredictor';
+import HealthRecords from '@/components/blockchain/HealthRecords';
+import DeviceMonitoring from '@/components/iot/DeviceMonitoring';
+import DroneDelivery from '@/components/emergency/DroneDelivery';
+import VirtualConsultation from '@/components/telemedicine/VirtualConsultation';
+import HealthNetwork from '@/components/community/HealthNetwork';
+import MentalHealthSupport from '@/components/mental-health/MentalHealthSupport';
 
 const UserPortal = () => {
   const { user } = useAuth();
@@ -125,7 +135,6 @@ const UserPortal = () => {
       title: t('scheduleEvent'),
       description: t('scheduleEventDescription'),
     });
-    // In a real app, would open a dialog to add a new event
   };
 
   // Update language-dependent state when language changes
@@ -160,7 +169,7 @@ const UserPortal = () => {
       }
     >
       <Tabs defaultValue="dashboard" value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-        <TabsList className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 lg:grid-cols-10 gap-2">
+        <TabsList className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 lg:grid-cols-12 gap-2">
           <TabsTrigger value="dashboard" className="relative">
             <BarChart size={16} className="mr-2" />
             {t('dashboard')}
@@ -172,25 +181,37 @@ const UserPortal = () => {
               <span className="absolute top-0 right-0 h-2 w-2 bg-red-500 rounded-full"></span>
             )}
           </TabsTrigger>
-          <TabsTrigger value="health" className="relative">
+          <TabsTrigger value="ai-health" className="relative">
             <Brain size={16} className="mr-2" />
-            {t('health')}
+            AI Health
           </TabsTrigger>
-          <TabsTrigger value="doctors" className="relative">
+          <TabsTrigger value="iot" className="relative">
+            <Activity size={16} className="mr-2" />
+            IoT Devices
+          </TabsTrigger>
+          <TabsTrigger value="blockchain" className="relative">
+            <Shield size={16} className="mr-2" />
+            Health Records
+          </TabsTrigger>
+          <TabsTrigger value="telemedicine" className="relative">
             <Stethoscope size={16} className="mr-2" />
-            {t('doctors')}
+            Telemedicine
+          </TabsTrigger>
+          <TabsTrigger value="drone" className="relative">
+            <Plane size={16} className="mr-2" />
+            Drone Delivery
+          </TabsTrigger>
+          <TabsTrigger value="mental-health" className="relative">
+            <Heart size={16} className="mr-2" />
+            Mental Health
+          </TabsTrigger>
+          <TabsTrigger value="community" className="relative">
+            <Users size={16} className="mr-2" />
+            Community
           </TabsTrigger>
           <TabsTrigger value="marketplace" className="relative">
             <ShoppingCart size={16} className="mr-2" />
             {t('marketplace')}
-          </TabsTrigger>
-          <TabsTrigger value="blood" className="relative">
-            <Droplet size={16} className="mr-2" />
-            {t('bloodDonation')}
-          </TabsTrigger>
-          <TabsTrigger value="family" className="relative">
-            <Users size={16} className="mr-2" />
-            {t('familyRecords')}
           </TabsTrigger>
           <TabsTrigger value="communication" className="relative">
             <MessageSquare size={16} className="mr-2" />
@@ -199,10 +220,6 @@ const UserPortal = () => {
           <TabsTrigger value="payments" className="relative">
             <Wallet size={16} className="mr-2" />
             {t('payments')}
-          </TabsTrigger>
-          <TabsTrigger value="weather" className="relative">
-            <CloudRain size={16} className="mr-2" />
-            {t('weather')}
           </TabsTrigger>
         </TabsList>
         
@@ -314,30 +331,45 @@ const UserPortal = () => {
             </div>
           </div>
         </TabsContent>
-        
-        {/* Health AI Tab */}
-        <TabsContent value="health" className="m-0 space-y-6">
-          <SymptomTracker />
+
+        {/* AI Health Predictions Tab */}
+        <TabsContent value="ai-health" className="m-0 space-y-6">
+          <HealthPredictor />
         </TabsContent>
-        
-        {/* Doctors Tab */}
-        <TabsContent value="doctors" className="m-0 space-y-6">
-          <DoctorFinder />
+
+        {/* IoT Device Monitoring Tab */}
+        <TabsContent value="iot" className="m-0 space-y-6">
+          <DeviceMonitoring />
+        </TabsContent>
+
+        {/* Blockchain Health Records Tab */}
+        <TabsContent value="blockchain" className="m-0 space-y-6">
+          <HealthRecords />
+        </TabsContent>
+
+        {/* Telemedicine Tab */}
+        <TabsContent value="telemedicine" className="m-0 space-y-6">
+          <VirtualConsultation />
+        </TabsContent>
+
+        {/* Drone Delivery Tab */}
+        <TabsContent value="drone" className="m-0 space-y-6">
+          <DroneDelivery />
+        </TabsContent>
+
+        {/* Mental Health Support Tab */}
+        <TabsContent value="mental-health" className="m-0 space-y-6">
+          <MentalHealthSupport />
+        </TabsContent>
+
+        {/* Community Health Network Tab */}
+        <TabsContent value="community" className="m-0 space-y-6">
+          <HealthNetwork />
         </TabsContent>
         
         {/* Marketplace Tab */}
         <TabsContent value="marketplace" className="m-0 space-y-6">
           <MedicationMarketplace />
-        </TabsContent>
-        
-        {/* Blood Donation Tab */}
-        <TabsContent value="blood" className="m-0 space-y-6">
-          <BloodDonation />
-        </TabsContent>
-        
-        {/* Family Records Tab */}
-        <TabsContent value="family" className="m-0 space-y-6">
-          <FamilyRecords />
         </TabsContent>
 
         {/* Communication Tab */}
@@ -355,11 +387,6 @@ const UserPortal = () => {
               <HealthCard />
             </div>
           </div>
-        </TabsContent>
-        
-        {/* Weather Alerts Tab */}
-        <TabsContent value="weather" className="m-0 space-y-6">
-          <WeatherHealthAlerts />
         </TabsContent>
       </Tabs>
     </DashboardLayout>
