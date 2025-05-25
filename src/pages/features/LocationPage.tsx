@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import DashboardLayout from '@/components/dashboard/DashboardLayout';
@@ -181,6 +180,7 @@ const LocationPage = () => {
               lat: 27.7089,
               lng: 85.3149,
               phone: '01-4220911',
+              rating: 4.0,
               isOpen: true,
               services: ['Emergency Response', 'Patient Transfer']
             },
@@ -192,6 +192,7 @@ const LocationPage = () => {
               lat: 27.6923,
               lng: 85.3149,
               phone: '101',
+              rating: 4.2,
               isOpen: true,
               services: ['Fire Response', 'Rescue Operations']
             }
@@ -219,6 +220,7 @@ const LocationPage = () => {
               lat: 27.6918,
               lng: 85.3149,
               phone: '01-4260469',
+              rating: 4.5,
               isOpen: true,
               services: ['Blood Collection', 'Blood Testing', 'Emergency Supply']
             }
@@ -234,6 +236,7 @@ const LocationPage = () => {
               lat: 27.6944,
               lng: 85.3206,
               phone: '01-4211219',
+              rating: 4.0,
               isOpen: true,
               services: ['Traffic Monitoring', 'Emergency Coordination']
             },
@@ -245,6 +248,7 @@ const LocationPage = () => {
               lat: 27.7356,
               lng: 85.3456,
               phone: '01-4221100',
+              rating: 3.8,
               isOpen: true,
               services: ['Traffic Control', 'Emergency Response']
             }

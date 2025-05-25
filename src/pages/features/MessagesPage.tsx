@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import DashboardLayout from '@/components/dashboard/DashboardLayout';
@@ -228,7 +227,7 @@ const MessagesPage = () => {
       }
     };
 
-    const generateMessages = () => {
+    const generateMessages = (): Message[] => {
       const baseMessages: Message[] = [];
       const now = new Date();
       

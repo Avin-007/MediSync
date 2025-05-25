@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import DashboardLayout from '@/components/dashboard/DashboardLayout';
@@ -48,7 +47,7 @@ const SchedulePage = () => {
 
   useEffect(() => {
     // Generate role-specific events
-    const generateEvents = () => {
+    const generateEvents = (): ScheduleEvent[] => {
       const baseEvents: ScheduleEvent[] = [];
       const today = new Date();
       
@@ -460,7 +459,7 @@ const SchedulePage = () => {
                   <Label htmlFor="priority">Priority</Label>
                   <Select 
                     value={newEvent.priority || 'medium'} 
-                    onValueChange={(value) => setNewEvent(prev => ({ ...prev, priority: value as any }))}
+                    onValueChange={(value) => setNewEvent(prev => ({ ...prev, priority: value as 'low' | 'medium' | 'high' }))}
                   >
                     <SelectTrigger>
                       <SelectValue />
@@ -482,166 +481,136 @@ const SchedulePage = () => {
                   placeholder="Event location"
                 />
               </div>
-              <div>
-                <Label htmlFor="duration">Duration (minutes)</Label>
-                <Input
-                  id="duration"
-                  type="number"
-                  value={newEvent.duration || 60}
-                  onChange={(e) => setNewEvent(prev => ({ ...prev, duration: parseInt(e.target.value) }))}
-                  min="15"
-                  step="15"
-                />
+              <div className="flex gap-2">
+                <Button onClick={handleAddEvent} className="flex-1">Add Event</Button>
+                <Button variant="outline" onClick={() => setIsAddingEvent(false)}>Cancel</Button>
               </div>
-              <Button onClick={handleAddEvent}>Add Event</Button>
             </div>
           </DialogContent>
         </Dialog>
       }
     >
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Calendar and Date Selection */}
-        <div className="lg:col-span-1">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Calendar size={18} />
-                Calendar
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div>
-                  <Label htmlFor="date-picker">Select Date</Label>
-                  <Input
-                    id="date-picker"
-                    type="date"
-                    value={selectedDate}
-                    onChange={(e) => setSelectedDate(e.target.value)}
-                    className="w-full"
-                  />
-                </div>
-                
-                <div className="space-y-2">
-                  <h3 className="font-medium">Today's Summary</h3>
-                  <div className="text-sm space-y-1">
-                    <p>Total Events: {filteredEvents.length}</p>
-                    <p>Completed: {filteredEvents.filter(e => e.status === 'completed').length}</p>
-                    <p>Scheduled: {filteredEvents.filter(e => e.status === 'scheduled').length}</p>
-                  </div>
-                </div>
+      <div className="space-y-6">
+        {/* Date Selector */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Calendar size={18} />
+              Schedule for {new Date(selectedDate).toLocaleDateString()}
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Input
+              type="date"
+              value={selectedDate}
+              onChange={(e) => setSelectedDate(e.target.value)}
+              className="w-fit"
+            />
+          </CardContent>
+        </Card>
 
-                <div className="space-y-2">
-                  <h3 className="font-medium">Upcoming Events</h3>
-                  <div className="text-sm space-y-1">
-                    {upcomingEvents.slice(0, 3).map(event => (
-                      <div key={event.id} className="p-2 bg-gray-50 rounded">
-                        <p className="font-medium">{event.title}</p>
-                        <p className="text-gray-500">{event.date} at {event.time}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Events List */}
-        <div className="lg:col-span-2">
-          <Card>
-            <CardHeader>
-              <CardTitle>
-                Events for {new Date(selectedDate).toLocaleDateString('en-US', { 
-                  weekday: 'long', 
-                  year: 'numeric', 
-                  month: 'long', 
-                  day: 'numeric' 
-                })}
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {filteredEvents.length === 0 ? (
-                  <div className="text-center py-8 text-gray-500">
-                    <Calendar size={48} className="mx-auto mb-4 text-gray-300" />
-                    <p>No events scheduled for this date</p>
-                    <Button 
-                      variant="outline" 
-                      className="mt-2"
-                      onClick={() => setIsAddingEvent(true)}
-                    >
-                      Add Event
-                    </Button>
-                  </div>
-                ) : (
-                  filteredEvents.map(event => (
-                    <div key={event.id} className="border rounded-lg p-4 hover:bg-gray-50">
-                      <div className="flex justify-between items-start">
-                        <div className="flex-1">
-                          <div className="flex items-center gap-2 mb-2">
-                            <h3 className="font-medium">{event.title}</h3>
-                            {getPriorityBadge(event.priority)}
-                            {getStatusBadge(event.status)}
+        {/* Today's Events */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-2 space-y-4">
+            <h3 className="text-lg font-semibold">Events for {new Date(selectedDate).toLocaleDateString()}</h3>
+            {filteredEvents.length === 0 ? (
+              <Card>
+                <CardContent className="p-8 text-center">
+                  <Calendar size={48} className="mx-auto mb-4 text-gray-300" />
+                  <p className="text-gray-500">No events scheduled for this date</p>
+                </CardContent>
+              </Card>
+            ) : (
+              filteredEvents.map(event => (
+                <Card key={event.id}>
+                  <CardContent className="p-4">
+                    <div className="flex justify-between items-start mb-2">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-1">
+                          <h4 className="font-medium">{event.title}</h4>
+                          {getPriorityBadge(event.priority)}
+                          {getStatusBadge(event.status)}
+                        </div>
+                        {event.description && (
+                          <p className="text-sm text-gray-600 mb-2">{event.description}</p>
+                        )}
+                        <div className="flex items-center gap-4 text-sm text-gray-500">
+                          <div className="flex items-center gap-1">
+                            <Clock size={14} />
+                            {event.time} ({event.duration}min)
                           </div>
-                          
-                          {event.description && (
-                            <p className="text-sm text-gray-600 mb-2">{event.description}</p>
-                          )}
-                          
-                          <div className="flex items-center gap-4 text-sm text-gray-500">
+                          {event.location && (
                             <div className="flex items-center gap-1">
-                              <Clock size={14} />
-                              {event.time} ({event.duration} min)
+                              <MapPin size={14} />
+                              {event.location}
                             </div>
-                            {event.location && (
-                              <div className="flex items-center gap-1">
-                                <MapPin size={14} />
-                                {event.location}
-                              </div>
-                            )}
-                            {event.participants && event.participants.length > 0 && (
-                              <div className="flex items-center gap-1">
-                                <User size={14} />
-                                {event.participants.length} participants
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                        
-                        <div className="flex items-center gap-2">
-                          {event.status === 'scheduled' && (
-                            <Button
-                              size="sm"
-                              variant="outline"
-                              onClick={() => handleUpdateEvent(event.id, { status: 'completed' })}
-                            >
-                              <CheckCircle size={14} className="mr-1" />
-                              Complete
-                            </Button>
                           )}
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            onClick={() => setEditingEvent(event)}
-                          >
-                            <Edit size={14} />
-                          </Button>
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            onClick={() => handleDeleteEvent(event.id)}
-                          >
-                            <Trash2 size={14} />
-                          </Button>
                         </div>
+                        {event.participants && event.participants.length > 0 && (
+                          <div className="flex items-center gap-1 mt-2 text-sm text-gray-500">
+                            <User size={14} />
+                            {event.participants.join(', ')}
+                          </div>
+                        )}
+                      </div>
+                      <div className="flex gap-1">
+                        {event.status === 'scheduled' && (
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => handleUpdateEvent(event.id, { status: 'completed' })}
+                          >
+                            <CheckCircle size={14} />
+                          </Button>
+                        )}
+                        <Button size="sm" variant="outline">
+                          <Edit size={14} />
+                        </Button>
+                        <Button 
+                          size="sm" 
+                          variant="outline"
+                          onClick={() => handleDeleteEvent(event.id)}
+                        >
+                          <Trash2 size={14} />
+                        </Button>
                       </div>
                     </div>
-                  ))
+                  </CardContent>
+                </Card>
+              ))
+            )}
+          </div>
+
+          {/* Upcoming Events Sidebar */}
+          <div>
+            <Card>
+              <CardHeader>
+                <CardTitle>Upcoming Events</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                {upcomingEvents.slice(0, 5).map(event => (
+                  <div key={event.id} className="p-3 border rounded-lg">
+                    <div className="flex justify-between items-start mb-1">
+                      <h5 className="font-medium text-sm">{event.title}</h5>
+                      {getPriorityBadge(event.priority)}
+                    </div>
+                    <p className="text-xs text-gray-500">
+                      {new Date(event.date).toLocaleDateString()} at {event.time}
+                    </p>
+                    {event.location && (
+                      <p className="text-xs text-gray-500 flex items-center gap-1 mt-1">
+                        <MapPin size={12} />
+                        {event.location}
+                      </p>
+                    )}
+                  </div>
+                ))}
+                {upcomingEvents.length === 0 && (
+                  <p className="text-gray-500 text-sm text-center py-4">No upcoming events</p>
                 )}
-              </div>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+          </div>
         </div>
       </div>
     </DashboardLayout>
