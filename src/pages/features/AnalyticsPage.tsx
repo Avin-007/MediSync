@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import DashboardLayout from '@/components/dashboard/DashboardLayout';
@@ -432,25 +431,25 @@ const AnalyticsPage = () => {
                     <h3 className="font-semibold">Key Recommendations</h3>
                     <div className="space-y-2 text-sm">
                       {user?.role === 'user' && (
-                        <React.Fragment>
+                        <>
                           <p>• Increase daily exercise to meet step goals</p>
                           <p>• Schedule annual eye examination</p>
                           <p>• Continue excellent medication compliance</p>
-                        </React.Fragment>
+                        </>
                       )}
                       {user?.role === 'ambulance' && (
-                        <React.Fragment>
+                        <>
                           <p>• Optimize route planning for better response times</p>
                           <p>• Schedule preventive maintenance check</p>
                           <p>• Update emergency protocols training</p>
-                        </React.Fragment>
+                        </>
                       )}
                       {user?.role === 'hospital' && (
-                        <React.Fragment>
+                        <>
                           <p>• Consider expanding ICU capacity</p>
                           <p>• Implement staff scheduling optimization</p>
                           <p>• Review patient discharge processes</p>
-                        </React.Fragment>
+                        </>
                       )}
                     </div>
                   </div>
