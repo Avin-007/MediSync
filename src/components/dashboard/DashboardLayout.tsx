@@ -8,7 +8,6 @@ import { BarChart3, Bell, Calendar, ChevronLeft, ChevronRight, LayoutDashboard, 
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
-import { useToast } from '@/hooks/use-toast';
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -27,7 +26,6 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   const location = useLocation();
   const { user, isAuthenticated } = useAuth();
   const [collapsed, setCollapsed] = useState(false);
-  const { toast } = useToast();
 
   // Redirect to login if not authenticated
   React.useEffect(() => {
@@ -43,28 +41,12 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
     { name: "Reminders", icon: <Bell size={20} />, path: `/${user?.role}/reminders` },
     { name: "Location", icon: <MapPin size={20} />, path: `/${user?.role}/location` },
     { name: "Messages", icon: <MessageSquare size={20} />, path: `/${user?.role}/messages` },
-    { name: "Profile", icon: <User size={20} />, path: `/settings` },
+    { name: "Profile", icon: <User size={20} />, path: `/profile` },
     { name: "Settings", icon: <Settings size={20} />, path: `/settings` },
   ];
 
   const handleNavigation = (path: string) => {
-    // Show toast for routes that aren't fully implemented yet
-    const implementedRoutes = [`/${user?.role}`, '/settings'];
-    
-    if (implementedRoutes.includes(path)) {
-      navigate(path);
-    } else {
-      toast({
-        title: "Coming Soon",
-        description: "This feature will be available in the next update.",
-        duration: 3000,
-      });
-      
-      // Navigate to dashboard for now
-      if (path !== location.pathname) {
-        navigate(`/${user?.role}`);
-      }
-    }
+    navigate(path);
   };
 
   if (!isAuthenticated) {

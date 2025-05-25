@@ -17,12 +17,13 @@ import Settings from "./pages/Settings";
 import Notifications from "./pages/Notifications";
 import NotFound from "./pages/NotFound";
 
-// Create placeholder components for the new routes
-const AnalyticsPage = () => <UserPortal />;
-const SchedulePage = () => <UserPortal />;
-const RemindersPage = () => <UserPortal />;
-const LocationPage = () => <UserPortal />;
-const MessagesPage = () => <UserPortal />;
+// Import the new functional pages
+import AnalyticsPage from "./pages/features/AnalyticsPage";
+import SchedulePage from "./pages/features/SchedulePage";
+import RemindersPage from "./pages/features/RemindersPage";
+import LocationPage from "./pages/features/LocationPage";
+import MessagesPage from "./pages/features/MessagesPage";
+import ProfilePage from "./pages/features/ProfilePage";
 
 const queryClient = new QueryClient();
 
@@ -87,6 +88,9 @@ const AppRoutes = () => {
       <Route path="/ambulance/location" element={
         <ProtectedRoute role="ambulance"><LocationPage /></ProtectedRoute>
       } />
+      <Route path="/ambulance/messages" element={
+        <ProtectedRoute role="ambulance"><MessagesPage /></ProtectedRoute>
+      } />
       
       {/* Hospital routes */}
       <Route path="/hospital" element={
@@ -103,6 +107,9 @@ const AppRoutes = () => {
       } />
       <Route path="/hospital/location" element={
         <ProtectedRoute role="hospital"><LocationPage /></ProtectedRoute>
+      } />
+      <Route path="/hospital/messages" element={
+        <ProtectedRoute role="hospital"><MessagesPage /></ProtectedRoute>
       } />
       
       {/* Traffic routes */}
@@ -121,6 +128,9 @@ const AppRoutes = () => {
       <Route path="/traffic/location" element={
         <ProtectedRoute role="traffic"><LocationPage /></ProtectedRoute>
       } />
+      <Route path="/traffic/messages" element={
+        <ProtectedRoute role="traffic"><MessagesPage /></ProtectedRoute>
+      } />
       
       {/* Nurse routes */}
       <Route path="/nurse" element={
@@ -138,10 +148,16 @@ const AppRoutes = () => {
       <Route path="/nurse/location" element={
         <ProtectedRoute role="nurse"><LocationPage /></ProtectedRoute>
       } />
+      <Route path="/nurse/messages" element={
+        <ProtectedRoute role="nurse"><MessagesPage /></ProtectedRoute>
+      } />
       
       {/* Common routes */}
       <Route path="/settings" element={
         <ProtectedRoute><Settings /></ProtectedRoute>
+      } />
+      <Route path="/profile" element={
+        <ProtectedRoute><ProfilePage /></ProtectedRoute>
       } />
       <Route path="/notifications" element={
         <ProtectedRoute><Notifications /></ProtectedRoute>
