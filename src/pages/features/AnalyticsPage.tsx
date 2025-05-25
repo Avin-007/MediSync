@@ -6,7 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, LineChart, Line, PieChart, Pie, Cell } from 'recharts';
-import { TrendingUp, Activity, Clock, Users, DollarSign } from 'lucide-react';
+import { TrendingUp, Activity, Clock, Users, DollarSign, AlertCircle, Brain, Zap } from 'lucide-react';
 
 const AnalyticsPage = () => {
   const { user } = useAuth();
@@ -39,7 +39,12 @@ const AnalyticsPage = () => {
               emergencyCalls: 3,
               healthScore: 85,
               medicationCompliance: 92
-            }
+            },
+            smartRecommendations: [
+              "Increase daily steps to 10,000 for better cardiovascular health",
+              "Schedule a dental checkup - it's been 6 months",
+              "Consider a nutritionist consultation based on your health goals"
+            ]
           };
         case 'ambulance':
           return {
@@ -63,7 +68,12 @@ const AnalyticsPage = () => {
               avgResponseTime: 7.6,
               successRate: 96,
               fuelEfficiency: 12.5
-            }
+            },
+            smartRecommendations: [
+              "Route optimization could reduce response time by 15%",
+              "Vehicle maintenance scheduled for next week",
+              "Consider backup ambulance for high-traffic hours"
+            ]
           };
         case 'hospital':
           return {
@@ -88,7 +98,12 @@ const AnalyticsPage = () => {
               bedOccupancy: 82,
               avgStayDuration: 4.2,
               revenue: 125000
-            }
+            },
+            smartRecommendations: [
+              "ICU capacity reaching critical levels - consider patient transfers",
+              "Staff scheduling optimization could improve efficiency",
+              "Emergency department needs additional triage nurse"
+            ]
           };
         case 'traffic':
           return {
@@ -113,7 +128,12 @@ const AnalyticsPage = () => {
               avgClearanceTime: 32,
               trafficReduction: 25,
               emergencySuccess: 98
-            }
+            },
+            smartRecommendations: [
+              "Preemptive signal timing could reduce clearance time",
+              "High congestion expected during rush hour - prepare protocols",
+              "Coordinate with emergency services for faster response"
+            ]
           };
         case 'nurse':
           return {
@@ -137,7 +157,12 @@ const AnalyticsPage = () => {
               medicationsGiven: 328,
               vitalsRecorded: 525,
               satisfactionScore: 4.8
-            }
+            },
+            smartRecommendations: [
+              "Medication rounds optimization could save 30 minutes daily",
+              "Patient care documentation needs attention",
+              "Consider delegation for routine vital checks"
+            ]
           };
         default:
           return {};
@@ -192,26 +217,55 @@ const AnalyticsPage = () => {
   return (
     <DashboardLayout
       title={getRoleSpecificTitle()}
-      description="Track key metrics and performance indicators"
+      description="Track key metrics and performance indicators with AI-powered insights"
       headerActions={
-        <Select value={timeRange} onValueChange={setTimeRange}>
-          <SelectTrigger className="w-32">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="1d">Last 24h</SelectItem>
-            <SelectItem value="7d">Last 7 days</SelectItem>
-            <SelectItem value="30d">Last 30 days</SelectItem>
-            <SelectItem value="90d">Last 3 months</SelectItem>
-          </SelectContent>
-        </Select>
+        <div className="flex gap-2">
+          <Select value={timeRange} onValueChange={setTimeRange}>
+            <SelectTrigger className="w-32">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="1d">Last 24h</SelectItem>
+              <SelectItem value="7d">Last 7 days</SelectItem>
+              <SelectItem value="30d">Last 30 days</SelectItem>
+              <SelectItem value="90d">Last 3 months</SelectItem>
+            </SelectContent>
+          </Select>
+          <Badge variant="outline" className="bg-green-50 text-green-700">
+            <Activity className="h-3 w-3 mr-1" />
+            Live Data
+          </Badge>
+        </div>
       }
     >
       <div className="space-y-6">
+        {/* AI-Powered Smart Recommendations */}
+        {analyticsData.smartRecommendations && (
+          <Card className="border-2 border-blue-200 bg-blue-50/50">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Brain className="h-5 w-5 text-blue-600" />
+                Smart Recommendations
+                <Badge variant="outline" className="bg-blue-100 text-blue-700">AI-Powered</Badge>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-2">
+                {analyticsData.smartRecommendations.map((recommendation: string, index: number) => (
+                  <div key={index} className="flex items-start gap-2 p-2 bg-white rounded-md">
+                    <Zap className="h-4 w-4 text-blue-500 mt-0.5 flex-shrink-0" />
+                    <span className="text-sm">{recommendation}</span>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
         {/* Key Metrics */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {analyticsData.stats && Object.entries(analyticsData.stats).map(([key, value]) => (
-            <Card key={key}>
+            <Card key={key} className="hover:shadow-md transition-shadow">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
@@ -241,12 +295,17 @@ const AnalyticsPage = () => {
           {/* Primary Chart */}
           <Card>
             <CardHeader>
-              <CardTitle>
-                {user?.role === 'user' && 'Health Trends'}
-                {user?.role === 'ambulance' && 'Response Metrics'}
-                {user?.role === 'hospital' && 'Patient Flow'}
-                {user?.role === 'traffic' && 'Traffic Management'}
-                {user?.role === 'nurse' && 'Patient Care Activities'}
+              <CardTitle className="flex items-center justify-between">
+                <span>
+                  {user?.role === 'user' && 'Health Trends'}
+                  {user?.role === 'ambulance' && 'Response Metrics'}
+                  {user?.role === 'hospital' && 'Patient Flow'}
+                  {user?.role === 'traffic' && 'Traffic Management'}
+                  {user?.role === 'nurse' && 'Patient Care Activities'}
+                </span>
+                <Badge variant="outline" className="bg-green-50 text-green-700">
+                  Real-time
+                </Badge>
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -360,25 +419,32 @@ const AnalyticsPage = () => {
           </Card>
         </div>
 
-        {/* Detailed Analytics */}
+        {/* Enhanced Detailed Analytics */}
         <Card>
           <CardHeader>
-            <CardTitle>Detailed Reports</CardTitle>
+            <CardTitle className="flex items-center gap-2">
+              <BarChart className="h-5 w-5" />
+              Advanced Analytics & Insights
+            </CardTitle>
           </CardHeader>
           <CardContent>
             <Tabs defaultValue="summary">
-              <TabsList>
-                <TabsTrigger value="summary">Summary</TabsTrigger>
-                <TabsTrigger value="trends">Trends</TabsTrigger>
-                <TabsTrigger value="insights">Insights</TabsTrigger>
+              <TabsList className="grid w-full grid-cols-4">
+                <TabsTrigger value="summary">Performance Summary</TabsTrigger>
+                <TabsTrigger value="trends">Trend Analysis</TabsTrigger>
+                <TabsTrigger value="insights">AI Insights</TabsTrigger>
+                <TabsTrigger value="alerts">Smart Alerts</TabsTrigger>
               </TabsList>
               
               <TabsContent value="summary" className="mt-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-4">
-                    <h3 className="font-semibold">Performance Summary</h3>
+                    <h3 className="font-semibold flex items-center gap-2">
+                      <TrendingUp className="h-4 w-4" />
+                      Performance Summary
+                    </h3>
                     {user?.role === 'user' && (
-                      <div className="space-y-2">
+                      <>
                         <div className="flex justify-between">
                           <span>Health Score Trend:</span>
                           <Badge variant="outline" className="bg-green-50 text-green-700">Improving</Badge>
@@ -391,10 +457,10 @@ const AnalyticsPage = () => {
                           <span>Exercise Goals:</span>
                           <Badge variant="outline" className="bg-amber-50 text-amber-700">Needs Attention</Badge>
                         </div>
-                      </div>
+                      </>
                     )}
                     {user?.role === 'ambulance' && (
-                      <div className="space-y-2">
+                      <>
                         <div className="flex justify-between">
                           <span>Response Time:</span>
                           <Badge variant="outline" className="bg-green-50 text-green-700">Under Target</Badge>
@@ -407,10 +473,10 @@ const AnalyticsPage = () => {
                           <span>Vehicle Maintenance:</span>
                           <Badge variant="outline" className="bg-blue-50 text-blue-700">Up to Date</Badge>
                         </div>
-                      </div>
+                      </>
                     )}
                     {user?.role === 'hospital' && (
-                      <div className="space-y-2">
+                      <>
                         <div className="flex justify-between">
                           <span>Bed Occupancy:</span>
                           <Badge variant="outline" className="bg-amber-50 text-amber-700">High</Badge>
@@ -423,11 +489,14 @@ const AnalyticsPage = () => {
                           <span>Staff Efficiency:</span>
                           <Badge variant="outline" className="bg-blue-50 text-blue-700">Good</Badge>
                         </div>
-                      </div>
+                      </>
                     )}
                   </div>
                   <div className="space-y-4">
-                    <h3 className="font-semibold">Key Recommendations</h3>
+                    <h3 className="font-semibold flex items-center gap-2">
+                      <Brain className="h-4 w-4" />
+                      Key Recommendations
+                    </h3>
                     <div className="space-y-2 text-sm">
                       {user?.role === 'user' && (
                         <>
@@ -456,13 +525,134 @@ const AnalyticsPage = () => {
               </TabsContent>
               
               <TabsContent value="trends" className="mt-4">
-                <p className="text-gray-600">Detailed trend analysis and historical comparisons will be displayed here.</p>
+                <div className="space-y-4">
+                  <h3 className="font-semibold">Trend Analysis</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <Card className="p-4">
+                      <h4 className="font-medium text-sm">Weekly Performance</h4>
+                      <p className="text-2xl font-bold text-green-600">+15%</p>
+                      <p className="text-xs text-gray-500">Compared to last week</p>
+                    </Card>
+                    <Card className="p-4">
+                      <h4 className="font-medium text-sm">Monthly Growth</h4>
+                      <p className="text-2xl font-bold text-blue-600">+8%</p>
+                      <p className="text-xs text-gray-500">Consistent improvement</p>
+                    </Card>
+                    <Card className="p-4">
+                      <h4 className="font-medium text-sm">Efficiency Score</h4>
+                      <p className="text-2xl font-bold text-purple-600">92%</p>
+                      <p className="text-xs text-gray-500">Above target of 85%</p>
+                    </Card>
+                  </div>
+                </div>
               </TabsContent>
               
               <TabsContent value="insights" className="mt-4">
-                <p className="text-gray-600">AI-powered insights and predictions will be displayed here.</p>
+                <div className="space-y-4">
+                  <h3 className="font-semibold flex items-center gap-2">
+                    <Brain className="h-4 w-4" />
+                    AI-Powered Insights
+                  </h3>
+                  <div className="space-y-3">
+                    <div className="p-4 bg-blue-50 rounded-lg">
+                      <h4 className="font-medium text-blue-800">Pattern Recognition</h4>
+                      <p className="text-sm text-blue-700 mt-1">
+                        AI has detected optimal performance patterns during morning hours. Consider adjusting schedules accordingly.
+                      </p>
+                    </div>
+                    <div className="p-4 bg-green-50 rounded-lg">
+                      <h4 className="font-medium text-green-800">Predictive Analysis</h4>
+                      <p className="text-sm text-green-700 mt-1">
+                        Based on current trends, expect 20% improvement in key metrics over the next month.
+                      </p>
+                    </div>
+                    <div className="p-4 bg-purple-50 rounded-lg">
+                      <h4 className="font-medium text-purple-800">Optimization Opportunities</h4>
+                      <p className="text-sm text-purple-700 mt-1">
+                        Machine learning suggests workflow adjustments that could increase efficiency by 12%.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </TabsContent>
+              
+              <TabsContent value="alerts" className="mt-4">
+                <div className="space-y-4">
+                  <h3 className="font-semibold flex items-center gap-2">
+                    <AlertCircle className="h-4 w-4" />
+                    Smart Alerts & Notifications
+                  </h3>
+                  <div className="space-y-3">
+                    <div className="p-4 border-l-4 border-red-500 bg-red-50">
+                      <div className="flex items-center gap-2">
+                        <AlertCircle className="h-4 w-4 text-red-500" />
+                        <h4 className="font-medium text-red-800">Critical Alert</h4>
+                      </div>
+                      <p className="text-sm text-red-700 mt-1">
+                        Response time exceeding target by 25%. Immediate attention required.
+                      </p>
+                    </div>
+                    <div className="p-4 border-l-4 border-amber-500 bg-amber-50">
+                      <div className="flex items-center gap-2">
+                        <Clock className="h-4 w-4 text-amber-500" />
+                        <h4 className="font-medium text-amber-800">Warning</h4>
+                      </div>
+                      <p className="text-sm text-amber-700 mt-1">
+                        Scheduled maintenance due in 2 days. Plan accordingly.
+                      </p>
+                    </div>
+                    <div className="p-4 border-l-4 border-blue-500 bg-blue-50">
+                      <div className="flex items-center gap-2">
+                        <TrendingUp className="h-4 w-4 text-blue-500" />
+                        <h4 className="font-medium text-blue-800">Performance Update</h4>
+                      </div>
+                      <p className="text-sm text-blue-700 mt-1">
+                        Weekly targets achieved ahead of schedule. Great work!
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </TabsContent>
             </Tabs>
+          </CardContent>
+        </Card>
+
+        {/* Real-time Status Updates */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Activity className="h-5 w-5" />
+              Real-time Status Updates
+              <Badge variant="outline" className="bg-green-50 text-green-700">
+                <div className="w-2 h-2 bg-green-500 rounded-full mr-1 animate-pulse"></div>
+                Live
+              </Badge>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-3">
+              <div className="flex items-center justify-between p-3 bg-green-50 rounded-lg">
+                <div className="flex items-center gap-3">
+                  <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                  <span className="font-medium">System Status</span>
+                </div>
+                <Badge variant="outline" className="bg-green-100 text-green-700">All Systems Operational</Badge>
+              </div>
+              <div className="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
+                <div className="flex items-center gap-3">
+                  <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+                  <span className="font-medium">Data Sync</span>
+                </div>
+                <Badge variant="outline" className="bg-blue-100 text-blue-700">Syncing...</Badge>
+              </div>
+              <div className="flex items-center justify-between p-3 bg-purple-50 rounded-lg">
+                <div className="flex items-center gap-3">
+                  <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
+                  <span className="font-medium">AI Analysis</span>
+                </div>
+                <Badge variant="outline" className="bg-purple-100 text-purple-700">Processing Insights</Badge>
+              </div>
+            </div>
           </CardContent>
         </Card>
       </div>
