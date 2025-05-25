@@ -4,10 +4,9 @@ import DashboardLayout from '@/components/dashboard/DashboardLayout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, LineChart, Line, PieChart, Pie, Cell } from 'recharts';
-import { TrendingUp, TrendingDown, Activity, Clock, Users, Ambulance, MapPin, AlertTriangle, Heart, DollarSign } from 'lucide-react';
+import { TrendingUp, Activity, Clock, Users, DollarSign } from 'lucide-react';
 
 const AnalyticsPage = () => {
   const { user } = useAuth();
@@ -375,85 +374,87 @@ const AnalyticsPage = () => {
               </TabsList>
               
               <TabsContent value="summary" className="mt-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-4">
-                    <h3 className="font-semibold">Performance Summary</h3>
-                    {user?.role === 'user' && (
-                      <div className="space-y-2">
-                        <div className="flex justify-between">
-                          <span>Health Score Trend:</span>
-                          <Badge variant="outline" className="bg-green-50 text-green-700">Improving</Badge>
-                        </div>
-                        <div className="flex justify-between">
-                          <span>Medication Compliance:</span>
-                          <Badge variant="outline" className="bg-blue-50 text-blue-700">Excellent</Badge>
-                        </div>
-                        <div className="flex justify-between">
-                          <span>Exercise Goals:</span>
-                          <Badge variant="outline" className="bg-amber-50 text-amber-700">Needs Attention</Badge>
-                        </div>
-                      </div>
-                    )}
-                    {user?.role === 'ambulance' && (
-                      <div className="space-y-2">
-                        <div className="flex justify-between">
-                          <span>Response Time:</span>
-                          <Badge variant="outline" className="bg-green-50 text-green-700">Under Target</Badge>
-                        </div>
-                        <div className="flex justify-between">
-                          <span>Success Rate:</span>
-                          <Badge variant="outline" className="bg-green-50 text-green-700">Excellent</Badge>
-                        </div>
-                        <div className="flex justify-between">
-                          <span>Vehicle Maintenance:</span>
-                          <Badge variant="outline" className="bg-blue-50 text-blue-700">Up to Date</Badge>
-                        </div>
-                      </div>
-                    )}
-                    {user?.role === 'hospital' && (
-                      <div className="space-y-2">
-                        <div className="flex justify-between">
-                          <span>Bed Occupancy:</span>
-                          <Badge variant="outline" className="bg-amber-50 text-amber-700">High</Badge>
-                        </div>
-                        <div className="flex justify-between">
-                          <span>Patient Satisfaction:</span>
-                          <Badge variant="outline" className="bg-green-50 text-green-700">Excellent</Badge>
-                        </div>
-                        <div className="flex justify-between">
-                          <span>Staff Efficiency:</span>
-                          <Badge variant="outline" className="bg-blue-50 text-blue-700">Good</Badge>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                  <div className="space-y-4">
-                    <h3 className="font-semibold">Key Recommendations</h3>
-                    <div className="space-y-2 text-sm">
+                <>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-4">
+                      <h3 className="font-semibold">Performance Summary</h3>
                       {user?.role === 'user' && (
-                        <>
-                          <p>• Increase daily exercise to meet step goals</p>
-                          <p>• Schedule annual eye examination</p>
-                          <p>• Continue excellent medication compliance</p>
-                        </>
+                        <div className="space-y-2">
+                          <div className="flex justify-between">
+                            <span>Health Score Trend:</span>
+                            <Badge variant="outline" className="bg-green-50 text-green-700">Improving</Badge>
+                          </div>
+                          <div className="flex justify-between">
+                            <span>Medication Compliance:</span>
+                            <Badge variant="outline" className="bg-blue-50 text-blue-700">Excellent</Badge>
+                          </div>
+                          <div className="flex justify-between">
+                            <span>Exercise Goals:</span>
+                            <Badge variant="outline" className="bg-amber-50 text-amber-700">Needs Attention</Badge>
+                          </div>
+                        </div>
                       )}
                       {user?.role === 'ambulance' && (
-                        <>
-                          <p>• Optimize route planning for better response times</p>
-                          <p>• Schedule preventive maintenance check</p>
-                          <p>• Update emergency protocols training</p>
-                        </>
+                        <div className="space-y-2">
+                          <div className="flex justify-between">
+                            <span>Response Time:</span>
+                            <Badge variant="outline" className="bg-green-50 text-green-700">Under Target</Badge>
+                          </div>
+                          <div className="flex justify-between">
+                            <span>Success Rate:</span>
+                            <Badge variant="outline" className="bg-green-50 text-green-700">Excellent</Badge>
+                          </div>
+                          <div className="flex justify-between">
+                            <span>Vehicle Maintenance:</span>
+                            <Badge variant="outline" className="bg-blue-50 text-blue-700">Up to Date</Badge>
+                          </div>
+                        </div>
                       )}
                       {user?.role === 'hospital' && (
-                        <>
-                          <p>• Consider expanding ICU capacity</p>
-                          <p>• Implement staff scheduling optimization</p>
-                          <p>• Review patient discharge processes</p>
-                        </>
+                        <div className="space-y-2">
+                          <div className="flex justify-between">
+                            <span>Bed Occupancy:</span>
+                            <Badge variant="outline" className="bg-amber-50 text-amber-700">High</Badge>
+                          </div>
+                          <div className="flex justify-between">
+                            <span>Patient Satisfaction:</span>
+                            <Badge variant="outline" className="bg-green-50 text-green-700">Excellent</Badge>
+                          </div>
+                          <div className="flex justify-between">
+                            <span>Staff Efficiency:</span>
+                            <Badge variant="outline" className="bg-blue-50 text-blue-700">Good</Badge>
+                          </div>
+                        </div>
                       )}
                     </div>
+                    <div className="space-y-4">
+                      <h3 className="font-semibold">Key Recommendations</h3>
+                      <div className="space-y-2 text-sm">
+                        {user?.role === 'user' && (
+                          <>
+                            <p>• Increase daily exercise to meet step goals</p>
+                            <p>• Schedule annual eye examination</p>
+                            <p>• Continue excellent medication compliance</p>
+                          </>
+                        )}
+                        {user?.role === 'ambulance' && (
+                          <>
+                            <p>• Optimize route planning for better response times</p>
+                            <p>• Schedule preventive maintenance check</p>
+                            <p>• Update emergency protocols training</p>
+                          </>
+                        )}
+                        {user?.role === 'hospital' && (
+                          <>
+                            <p>• Consider expanding ICU capacity</p>
+                            <p>• Implement staff scheduling optimization</p>
+                            <p>• Review patient discharge processes</p>
+                          </>
+                        )}
+                      </div>
+                    </div>
                   </div>
-                </div>
+                </>
               </TabsContent>
               
               <TabsContent value="trends" className="mt-4">
