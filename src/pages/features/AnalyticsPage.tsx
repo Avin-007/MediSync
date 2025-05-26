@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import DashboardLayout from '@/components/dashboard/DashboardLayout';
@@ -217,7 +216,7 @@ const AnalyticsPage = () => {
               <AnalyticsWidget 
                 title="Weekly Trends"
                 data={analyticsData.trends}
-                chartType="line"
+                chartType="area"
                 categories={['emergencies', 'responses']}
               />
               <AnalyticsWidget 

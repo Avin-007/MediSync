@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import MapComponent from '@/components/MapComponent';
 import EmergencyRequest from '@/components/user/EmergencyRequest';
@@ -11,7 +10,7 @@ import { useToast } from '@/hooks/use-toast';
 import { 
   AlertCircle, Clock, BarChart, Brain, Stethoscope, ShoppingCart, PhoneCall, 
   Droplet, Users, Wallet, CloudRain, CalendarCheck, MessageSquare, Bell,
-  Plane, Shield, Activity, Heart, TrendingUp, Zap
+  Plane, Shield, Activity, Heart, TrendingUp, Zap, TestTube, Bed, Wheelchair
 } from 'lucide-react';
 import DashboardLayout from '@/components/dashboard/DashboardLayout';
 import { useAuth } from '@/contexts/AuthContext';
@@ -31,7 +30,10 @@ import AnalyticsWidget from '@/components/dashboard/AnalyticsWidget';
 import RemindersWidget from '@/components/dashboard/RemindersWidget';
 import ScheduleWidget from '@/components/dashboard/ScheduleWidget';
 
-// Import new AI and innovative features
+// Import new comprehensive features
+import LabServices from '@/components/user/LabServices';
+import HospitalServices from '@/components/user/HospitalServices';
+import ReportNotifications from '@/components/user/ReportNotifications';
 import HealthPredictor from '@/components/ai/HealthPredictor';
 import HealthRecords from '@/components/blockchain/HealthRecords';
 import DeviceMonitoring from '@/components/iot/DeviceMonitoring';
@@ -169,57 +171,69 @@ const UserPortal = () => {
       }
     >
       <Tabs defaultValue="dashboard" value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-        <TabsList className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 lg:grid-cols-12 gap-2">
+        <TabsList className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-15 gap-1 text-xs">
           <TabsTrigger value="dashboard" className="relative">
-            <BarChart size={16} className="mr-2" />
-            {t('dashboard')}
+            <BarChart size={14} className="mr-1" />
+            Dashboard
           </TabsTrigger>
           <TabsTrigger value="emergency" className="relative">
-            <AlertCircle size={16} className="mr-2" />
-            {t('emergency')}
+            <AlertCircle size={14} className="mr-1" />
+            Emergency
             {hasActiveEmergency && (
               <span className="absolute top-0 right-0 h-2 w-2 bg-red-500 rounded-full"></span>
             )}
           </TabsTrigger>
+          <TabsTrigger value="lab-services" className="relative">
+            <TestTube size={14} className="mr-1" />
+            Lab Services
+          </TabsTrigger>
+          <TabsTrigger value="hospital-services" className="relative">
+            <Bed size={14} className="mr-1" />
+            Hospitals
+          </TabsTrigger>
+          <TabsTrigger value="reports" className="relative">
+            <Bell size={14} className="mr-1" />
+            Reports
+          </TabsTrigger>
           <TabsTrigger value="ai-health" className="relative">
-            <Brain size={16} className="mr-2" />
+            <Brain size={14} className="mr-1" />
             AI Health
           </TabsTrigger>
           <TabsTrigger value="iot" className="relative">
-            <Activity size={16} className="mr-2" />
+            <Activity size={14} className="mr-1" />
             IoT Devices
           </TabsTrigger>
           <TabsTrigger value="blockchain" className="relative">
-            <Shield size={16} className="mr-2" />
-            Health Records
+            <Shield size={14} className="mr-1" />
+            Records
           </TabsTrigger>
           <TabsTrigger value="telemedicine" className="relative">
-            <Stethoscope size={16} className="mr-2" />
+            <Stethoscope size={14} className="mr-1" />
             Telemedicine
           </TabsTrigger>
           <TabsTrigger value="drone" className="relative">
-            <Plane size={16} className="mr-2" />
-            Drone Delivery
+            <Plane size={14} className="mr-1" />
+            Drone
           </TabsTrigger>
           <TabsTrigger value="mental-health" className="relative">
-            <Heart size={16} className="mr-2" />
+            <Heart size={14} className="mr-1" />
             Mental Health
           </TabsTrigger>
           <TabsTrigger value="community" className="relative">
-            <Users size={16} className="mr-2" />
+            <Users size={14} className="mr-1" />
             Community
           </TabsTrigger>
           <TabsTrigger value="marketplace" className="relative">
-            <ShoppingCart size={16} className="mr-2" />
-            {t('marketplace')}
+            <ShoppingCart size={14} className="mr-1" />
+            Marketplace
           </TabsTrigger>
           <TabsTrigger value="communication" className="relative">
-            <MessageSquare size={16} className="mr-2" />
-            {t('communication')}
+            <MessageSquare size={14} className="mr-1" />
+            Communication
           </TabsTrigger>
           <TabsTrigger value="payments" className="relative">
-            <Wallet size={16} className="mr-2" />
-            {t('payments')}
+            <Wallet size={14} className="mr-1" />
+            Payments
           </TabsTrigger>
         </TabsList>
         
@@ -330,6 +344,21 @@ const UserPortal = () => {
               )}
             </div>
           </div>
+        </TabsContent>
+
+        {/* Lab Services Tab */}
+        <TabsContent value="lab-services" className="m-0 space-y-6">
+          <LabServices />
+        </TabsContent>
+
+        {/* Hospital Services Tab */}
+        <TabsContent value="hospital-services" className="m-0 space-y-6">
+          <HospitalServices />
+        </TabsContent>
+
+        {/* Report Notifications Tab */}
+        <TabsContent value="reports" className="m-0 space-y-6">
+          <ReportNotifications />
         </TabsContent>
 
         {/* AI Health Predictions Tab */}
