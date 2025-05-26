@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -17,7 +16,6 @@ import {
   MapPin,
   Phone,
   Star,
-  wheelchair,
   Wind,
   Droplet
 } from 'lucide-react';
@@ -456,7 +454,7 @@ const HospitalServices = () => {
                 <CardTitle className="flex items-center gap-2 text-lg">
                   {equipment.name === 'Oxygen Cylinder' && <Wind size={20} className="text-blue-500" />}
                   {equipment.name === 'Ventilator' && <Heart size={20} className="text-red-500" />}
-                  {equipment.name === 'Wheelchair' && <Wheelchair size={20} className="text-green-500" />}
+                  {equipment.name === 'Wheelchair' && <User size={20} className="text-green-500" />}
                   {equipment.name === 'Hospital Bed' && <Bed size={20} className="text-purple-500" />}
                   {equipment.name}
                 </CardTitle>
