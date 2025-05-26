@@ -164,260 +164,268 @@ const UserPortal = () => {
       description={`${t('welcome')}, ${user?.name}`}
       headerActions={
         hasActiveEmergency ? (
-          <Badge variant="destructive" className="text-md px-4 py-1">
+          <Badge variant="destructive" className="text-sm sm:text-md px-3 sm:px-4 py-1">
             {t('active')} {t('emergency')}
           </Badge>
         ) : null
       }
     >
-      <Tabs defaultValue="dashboard" value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-        <TabsList className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-15 gap-1 text-xs">
-          <TabsTrigger value="dashboard" className="relative">
-            <BarChart size={14} className="mr-1" />
-            Dashboard
-          </TabsTrigger>
-          <TabsTrigger value="emergency" className="relative">
-            <AlertCircle size={14} className="mr-1" />
-            Emergency
-            {hasActiveEmergency && (
-              <span className="absolute top-0 right-0 h-2 w-2 bg-red-500 rounded-full"></span>
-            )}
-          </TabsTrigger>
-          <TabsTrigger value="lab-services" className="relative">
-            <TestTube size={14} className="mr-1" />
-            Lab Services
-          </TabsTrigger>
-          <TabsTrigger value="hospital-services" className="relative">
-            <Bed size={14} className="mr-1" />
-            Hospitals
-          </TabsTrigger>
-          <TabsTrigger value="reports" className="relative">
-            <Bell size={14} className="mr-1" />
-            Reports
-          </TabsTrigger>
-          <TabsTrigger value="ai-health" className="relative">
-            <Brain size={14} className="mr-1" />
-            AI Health
-          </TabsTrigger>
-          <TabsTrigger value="iot" className="relative">
-            <Activity size={14} className="mr-1" />
-            IoT Devices
-          </TabsTrigger>
-          <TabsTrigger value="blockchain" className="relative">
-            <Shield size={14} className="mr-1" />
-            Records
-          </TabsTrigger>
-          <TabsTrigger value="telemedicine" className="relative">
-            <Stethoscope size={14} className="mr-1" />
-            Telemedicine
-          </TabsTrigger>
-          <TabsTrigger value="drone" className="relative">
-            <Plane size={14} className="mr-1" />
-            Drone
-          </TabsTrigger>
-          <TabsTrigger value="mental-health" className="relative">
-            <Heart size={14} className="mr-1" />
-            Mental Health
-          </TabsTrigger>
-          <TabsTrigger value="community" className="relative">
-            <Users size={14} className="mr-1" />
-            Community
-          </TabsTrigger>
-          <TabsTrigger value="marketplace" className="relative">
-            <ShoppingCart size={14} className="mr-1" />
-            Marketplace
-          </TabsTrigger>
-          <TabsTrigger value="communication" className="relative">
-            <MessageSquare size={14} className="mr-1" />
-            Communication
-          </TabsTrigger>
-          <TabsTrigger value="payments" className="relative">
-            <Wallet size={14} className="mr-1" />
-            Payments
-          </TabsTrigger>
-        </TabsList>
+      <div className="space-y-4 sm:space-y-6">
+        <Tabs defaultValue="dashboard" value={activeTab} onValueChange={setActiveTab} className="w-full">
+          {/* Responsive tab list with overflow scroll on mobile */}
+          <div className="w-full overflow-x-auto">
+            <TabsList className="inline-flex w-max min-w-full grid-cols-none gap-1 p-1 h-auto">
+              <TabsTrigger value="dashboard" className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-2 text-xs sm:text-sm whitespace-nowrap">
+                <BarChart size={14} />
+                <span className="hidden sm:inline">Dashboard</span>
+                <span className="sm:hidden">Home</span>
+              </TabsTrigger>
+              <TabsTrigger value="emergency" className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-2 text-xs sm:text-sm whitespace-nowrap relative">
+                <AlertCircle size={14} />
+                <span className="hidden sm:inline">Emergency</span>
+                <span className="sm:hidden">SOS</span>
+                {hasActiveEmergency && (
+                  <span className="absolute top-0 right-0 h-2 w-2 bg-red-500 rounded-full"></span>
+                )}
+              </TabsTrigger>
+              <TabsTrigger value="lab-services" className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-2 text-xs sm:text-sm whitespace-nowrap">
+                <TestTube size={14} />
+                <span className="hidden sm:inline">Lab Services</span>
+                <span className="sm:hidden">Lab</span>
+              </TabsTrigger>
+              <TabsTrigger value="hospital-services" className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-2 text-xs sm:text-sm whitespace-nowrap">
+                <Bed size={14} />
+                <span className="hidden sm:inline">Hospitals</span>
+                <span className="sm:hidden">Hospital</span>
+              </TabsTrigger>
+              <TabsTrigger value="reports" className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-2 text-xs sm:text-sm whitespace-nowrap">
+                <Bell size={14} />
+                <span className="hidden sm:inline">Reports</span>
+                <span className="sm:hidden">Reports</span>
+              </TabsTrigger>
+              <TabsTrigger value="ai-health" className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-2 text-xs sm:text-sm whitespace-nowrap">
+                <Brain size={14} />
+                <span className="hidden sm:inline">AI Health</span>
+                <span className="sm:hidden">AI</span>
+              </TabsTrigger>
+              <TabsTrigger value="iot" className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-2 text-xs sm:text-sm whitespace-nowrap">
+                <Activity size={14} />
+                <span className="hidden sm:inline">IoT Devices</span>
+                <span className="sm:hidden">IoT</span>
+              </TabsTrigger>
+              <TabsTrigger value="blockchain" className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-2 text-xs sm:text-sm whitespace-nowrap">
+                <Shield size={14} />
+                <span className="hidden sm:inline">Records</span>
+                <span className="sm:hidden">Records</span>
+              </TabsTrigger>
+              <TabsTrigger value="telemedicine" className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-2 text-xs sm:text-sm whitespace-nowrap">
+                <Stethoscope size={14} />
+                <span className="hidden sm:inline">Telemedicine</span>
+                <span className="sm:hidden">Tele</span>
+              </TabsTrigger>
+              <TabsTrigger value="drone" className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-2 text-xs sm:text-sm whitespace-nowrap">
+                <Plane size={14} />
+                <span className="hidden sm:inline">Drone</span>
+                <span className="sm:hidden">Drone</span>
+              </TabsTrigger>
+              <TabsTrigger value="mental-health" className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-2 text-xs sm:text-sm whitespace-nowrap">
+                <Heart size={14} />
+                <span className="hidden sm:inline">Mental Health</span>
+                <span className="sm:hidden">Mental</span>
+              </TabsTrigger>
+              <TabsTrigger value="community" className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-2 text-xs sm:text-sm whitespace-nowrap">
+                <Users size={14} />
+                <span className="hidden sm:inline">Community</span>
+                <span className="sm:hidden">Community</span>
+              </TabsTrigger>
+              <TabsTrigger value="marketplace" className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-2 text-xs sm:text-sm whitespace-nowrap">
+                <ShoppingCart size={14} />
+                <span className="hidden sm:inline">Marketplace</span>
+                <span className="sm:hidden">Shop</span>
+              </TabsTrigger>
+              <TabsTrigger value="communication" className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-2 text-xs sm:text-sm whitespace-nowrap">
+                <MessageSquare size={14} />
+                <span className="hidden sm:inline">Communication</span>
+                <span className="sm:hidden">Chat</span>
+              </TabsTrigger>
+              <TabsTrigger value="payments" className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-2 text-xs sm:text-sm whitespace-nowrap">
+                <Wallet size={14} />
+                <span className="hidden sm:inline">Payments</span>
+                <span className="sm:hidden">Pay</span>
+              </TabsTrigger>
+            </TabsList>
+          </div>
         
-        {/* Dashboard Tab */}
-        <TabsContent value="dashboard" className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="md:col-span-2">
-              <HealthOverview />
+          {/* Dashboard Tab */}
+          <TabsContent value="dashboard" className="space-y-4 sm:space-y-6 mt-4 sm:mt-6">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
+              <div className="lg:col-span-2">
+                <HealthOverview />
+              </div>
+              <div>
+                <HealthCard />
+              </div>
             </div>
-            <div>
-              <HealthCard />
+            
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
+              <AnalyticsWidget 
+                title={t('healthTrends')}
+                data={healthTrendsData}
+                chartType="area"
+                categories={['bp', 'glucose', 'weight']}
+              />
+              <RemindersWidget 
+                reminders={reminders}
+                onComplete={handleCompleteReminder}
+              />
+              <ScheduleWidget 
+                events={scheduleEvents}
+                onAddEvent={handleAddScheduleEvent}
+              />
             </div>
-          </div>
+            
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+              <WeatherHealthAlerts />
+              <HealthEvents />
+            </div>
+          </TabsContent>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <AnalyticsWidget 
-              title={t('healthTrends')}
-              data={healthTrendsData}
-              chartType="area"
-              categories={['bp', 'glucose', 'weight']}
-            />
-            <RemindersWidget 
-              reminders={reminders}
-              onComplete={handleCompleteReminder}
-            />
-            <ScheduleWidget 
-              events={scheduleEvents}
-              onAddEvent={handleAddScheduleEvent}
-            />
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <WeatherHealthAlerts />
-            <HealthEvents />
-          </div>
-        </TabsContent>
-        
-        {/* Emergency Tab */}
-        <TabsContent value="emergency" className="m-0 space-y-6">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div className="lg:col-span-2">
-              <Card className="border-2 border-nepal-crimson overflow-hidden">
-                <MapComponent 
-                  emergencies={hasActiveEmergency ? [{ name: language === 'en' ? "Active Emergency" : "सक्रिय आपतकालीन", lat: 27.7172, lng: 85.3240 }] : []} 
-                />
-              </Card>
-            </div>
-            <div className="space-y-6">
-              {hasActiveEmergency ? (
-                <EmergencyStatus 
-                  active={true} 
-                  onCancel={handleCancelEmergency}
-                />
-              ) : (
-                <EmergencyRequest 
-                  onSubmit={handleRequestSubmit}
-                />
-              )}
-              
-              {!hasActiveEmergency && (
-                <Card>
-                  <CardHeader>
-                    <CardTitle>{t('emergencyContacts')}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-4">
-                      <div className="p-4 bg-red-50 border border-red-100 rounded-md flex items-center justify-between">
-                        <div>
-                          <h3 className="font-medium">{language === 'en' ? 'Emergency Hotline' : 'आपतकालीन हटलाइन'}</h3>
-                          <p className="text-2xl font-bold text-red-600">102</p>
-                        </div>
-                        <Button 
-                          size="icon" 
-                          className="rounded-full bg-red-100 text-red-600 hover:bg-red-200 hover:text-red-700"
-                        >
-                          <PhoneCall size={18} />
-                        </Button>
-                      </div>
-                      <div className="p-4 bg-blue-50 border border-blue-100 rounded-md flex items-center justify-between">
-                        <div>
-                          <h3 className="font-medium">{language === 'en' ? 'Medical Support' : 'चिकित्सा सहायता'}</h3>
-                          <p className="text-sm">+977-1-4476225</p>
-                        </div>
-                        <Button 
-                          size="icon" 
-                          variant="outline" 
-                          className="rounded-full border-blue-200 text-blue-600 hover:bg-blue-100"
-                        >
-                          <PhoneCall size={18} />
-                        </Button>
-                      </div>
-                      <div className="p-4 bg-green-50 border border-green-100 rounded-md flex items-center justify-between">
-                        <div>
-                          <h3 className="font-medium">{language === 'en' ? 'Nurse On-Call' : 'नर्स अन-कल'}</h3>
-                          <p className="text-sm">+977-1-4478215</p>
-                        </div>
-                        <Button 
-                          size="icon" 
-                          variant="outline" 
-                          className="rounded-full border-green-200 text-green-600 hover:bg-green-100"
-                        >
-                          <PhoneCall size={18} />
-                        </Button>
-                      </div>
-                    </div>
-                  </CardContent>
+          {/* Emergency Tab */}
+          <TabsContent value="emergency" className="mt-4 sm:mt-6 space-y-4 sm:space-y-6">
+            <div className="grid grid-cols-1 xl:grid-cols-3 gap-4 sm:gap-6">
+              <div className="xl:col-span-2">
+                <Card className="border-2 border-nepal-crimson overflow-hidden">
+                  <MapComponent 
+                    emergencies={hasActiveEmergency ? [{ name: language === 'en' ? "Active Emergency" : "सक्रिय आपतकालीन", lat: 27.7172, lng: 85.3240 }] : []} 
+                  />
                 </Card>
-              )}
+              </div>
+              <div className="space-y-4 sm:space-y-6">
+                {hasActiveEmergency ? (
+                  <EmergencyStatus 
+                    active={true} 
+                    onCancel={handleCancelEmergency}
+                  />
+                ) : (
+                  <EmergencyRequest 
+                    onSubmit={handleRequestSubmit}
+                  />
+                )}
+                
+                {!hasActiveEmergency && (
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="text-lg sm:text-xl">{t('emergencyContacts')}</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-4">
+                        <div className="p-3 sm:p-4 bg-red-50 border border-red-100 rounded-md flex items-center justify-between">
+                          <div>
+                            <h3 className="font-medium text-sm sm:text-base">{language === 'en' ? 'Emergency Hotline' : 'आपतकालीन हटलाइन'}</h3>
+                            <p className="text-xl sm:text-2xl font-bold text-red-600">102</p>
+                          </div>
+                          <Button 
+                            size="icon" 
+                            className="rounded-full bg-red-100 text-red-600 hover:bg-red-200 hover:text-red-700 h-10 w-10 sm:h-12 sm:w-12"
+                          >
+                            <PhoneCall size={16} className="sm:w-5 sm:h-5" />
+                          </Button>
+                        </div>
+                        <div className="p-3 sm:p-4 bg-blue-50 border border-blue-100 rounded-md flex items-center justify-between">
+                          <div>
+                            <h3 className="font-medium text-sm sm:text-base">{language === 'en' ? 'Medical Support' : 'चिकित्सा सहायता'}</h3>
+                            <p className="text-xs sm:text-sm">+977-1-4476225</p>
+                          </div>
+                          <Button 
+                            size="icon" 
+                            variant="outline" 
+                            className="rounded-full border-blue-200 text-blue-600 hover:bg-blue-100 h-10 w-10 sm:h-12 sm:w-12"
+                          >
+                            <PhoneCall size={16} className="sm:w-5 sm:h-5" />
+                          </Button>
+                        </div>
+                        <div className="p-3 sm:p-4 bg-green-50 border border-green-100 rounded-md flex items-center justify-between">
+                          <div>
+                            <h3 className="font-medium text-sm sm:text-base">{language === 'en' ? 'Nurse On-Call' : 'नर्स अन-कल'}</h3>
+                            <p className="text-xs sm:text-sm">+977-1-4478215</p>
+                          </div>
+                          <Button 
+                            size="icon" 
+                            variant="outline" 
+                            className="rounded-full border-green-200 text-green-600 hover:bg-green-100 h-10 w-10 sm:h-12 sm:w-12"
+                          >
+                            <PhoneCall size={16} className="sm:w-5 sm:h-5" />
+                          </Button>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                )}
+              </div>
             </div>
-          </div>
-        </TabsContent>
+          </TabsContent>
 
-        {/* Lab Services Tab */}
-        <TabsContent value="lab-services" className="m-0 space-y-6">
-          <LabServices />
-        </TabsContent>
+          {/* All other tabs - keep existing structure but ensure responsive spacing */}
+          <TabsContent value="lab-services" className="mt-4 sm:mt-6 space-y-4 sm:space-y-6">
+            <LabServices />
+          </TabsContent>
 
-        {/* Hospital Services Tab */}
-        <TabsContent value="hospital-services" className="m-0 space-y-6">
-          <HospitalServices />
-        </TabsContent>
+          <TabsContent value="hospital-services" className="mt-4 sm:mt-6 space-y-4 sm:space-y-6">
+            <HospitalServices />
+          </TabsContent>
 
-        {/* Report Notifications Tab */}
-        <TabsContent value="reports" className="m-0 space-y-6">
-          <ReportNotifications />
-        </TabsContent>
+          <TabsContent value="reports" className="mt-4 sm:mt-6 space-y-4 sm:space-y-6">
+            <ReportNotifications />
+          </TabsContent>
 
-        {/* AI Health Predictions Tab */}
-        <TabsContent value="ai-health" className="m-0 space-y-6">
-          <HealthPredictor />
-        </TabsContent>
+          <TabsContent value="ai-health" className="mt-4 sm:mt-6 space-y-4 sm:space-y-6">
+            <HealthPredictor />
+          </TabsContent>
 
-        {/* IoT Device Monitoring Tab */}
-        <TabsContent value="iot" className="m-0 space-y-6">
-          <DeviceMonitoring />
-        </TabsContent>
+          <TabsContent value="iot" className="mt-4 sm:mt-6 space-y-4 sm:space-y-6">
+            <DeviceMonitoring />
+          </TabsContent>
 
-        {/* Blockchain Health Records Tab */}
-        <TabsContent value="blockchain" className="m-0 space-y-6">
-          <HealthRecords />
-        </TabsContent>
+          <TabsContent value="blockchain" className="mt-4 sm:mt-6 space-y-4 sm:space-y-6">
+            <HealthRecords />
+          </TabsContent>
 
-        {/* Telemedicine Tab */}
-        <TabsContent value="telemedicine" className="m-0 space-y-6">
-          <VirtualConsultation />
-        </TabsContent>
+          <TabsContent value="telemedicine" className="mt-4 sm:mt-6 space-y-4 sm:space-y-6">
+            <VirtualConsultation />
+          </TabsContent>
 
-        {/* Drone Delivery Tab */}
-        <TabsContent value="drone" className="m-0 space-y-6">
-          <DroneDelivery />
-        </TabsContent>
+          <TabsContent value="drone" className="mt-4 sm:mt-6 space-y-4 sm:space-y-6">
+            <DroneDelivery />
+          </TabsContent>
 
-        {/* Mental Health Support Tab */}
-        <TabsContent value="mental-health" className="m-0 space-y-6">
-          <MentalHealthSupport />
-        </TabsContent>
+          <TabsContent value="mental-health" className="mt-4 sm:mt-6 space-y-4 sm:space-y-6">
+            <MentalHealthSupport />
+          </TabsContent>
 
-        {/* Community Health Network Tab */}
-        <TabsContent value="community" className="m-0 space-y-6">
-          <HealthNetwork />
-        </TabsContent>
-        
-        {/* Marketplace Tab */}
-        <TabsContent value="marketplace" className="m-0 space-y-6">
-          <MedicationMarketplace />
-        </TabsContent>
+          <TabsContent value="community" className="mt-4 sm:mt-6 space-y-4 sm:space-y-6">
+            <HealthNetwork />
+          </TabsContent>
+          
+          <TabsContent value="marketplace" className="mt-4 sm:mt-6 space-y-4 sm:space-y-6">
+            <MedicationMarketplace />
+          </TabsContent>
 
-        {/* Communication Tab */}
-        <TabsContent value="communication" className="m-0 space-y-6">
-          <InAppCommunication />
-        </TabsContent>
-        
-        {/* Payments Tab */}
-        <TabsContent value="payments" className="m-0 space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="md:col-span-2">
-              <PaymentCenter />
+          <TabsContent value="communication" className="mt-4 sm:mt-6 space-y-4 sm:space-y-6">
+            <InAppCommunication />
+          </TabsContent>
+          
+          <TabsContent value="payments" className="mt-4 sm:mt-6 space-y-4 sm:space-y-6">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
+              <div className="lg:col-span-2">
+                <PaymentCenter />
+              </div>
+              <div>
+                <HealthCard />
+              </div>
             </div>
-            <div>
-              <HealthCard />
-            </div>
-          </div>
-        </TabsContent>
-      </Tabs>
+          </TabsContent>
+        </Tabs>
+      </div>
     </DashboardLayout>
   );
 };
