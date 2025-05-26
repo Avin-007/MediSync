@@ -17,7 +17,7 @@ import {
   MapPin,
   Phone,
   Star,
-  Wheelchair,
+  wheelchair,
   Wind,
   Droplet
 } from 'lucide-react';

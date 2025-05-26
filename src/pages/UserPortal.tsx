@@ -10,7 +10,7 @@ import { useToast } from '@/hooks/use-toast';
 import { 
   AlertCircle, Clock, BarChart, Brain, Stethoscope, ShoppingCart, PhoneCall, 
   Droplet, Users, Wallet, CloudRain, CalendarCheck, MessageSquare, Bell,
-  Plane, Shield, Activity, Heart, TrendingUp, Zap, TestTube, Bed, Wheelchair
+  Plane, Shield, Activity, Heart, TrendingUp, Zap, TestTube, Bed, wheelchair
 } from 'lucide-react';
 import DashboardLayout from '@/components/dashboard/DashboardLayout';
 import { useAuth } from '@/contexts/AuthContext';
