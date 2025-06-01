@@ -1,17 +1,6 @@
-# Welcome to your Lovable project
-
-## Project info
-
-**URL**: https://lovable.dev/projects/ffa17835-fb3e-41e1-bff7-e3928f2d1b4c
-
-## How can I edit this code?
-
-There are several ways of editing your application.
-
-**Use Lovable**
+# Welcome to MediSYnc
 
 
-Changes made via Lovable will be committed automatically to this repo.
 
 **Use your preferred IDE**
 
@@ -61,7 +50,7 @@ This project is built with:
 
 ## How can I deploy this project?
 
-Simply open [Lovable](https://lovable.dev/projects/ffa17835-fb3e-41e1-bff7-e3928f2d1b4c) and click on Share -> Publish.
+
 
 ## Can I connect a custom domain to my Lovable project?
 
@@ -69,4 +58,4 @@ Yes it is!
 
 To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+
