@@ -1,8 +1,7 @@
-
 import React, { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { ArrowRight, Play, Star, CheckCircle, Heart, Activity, Shield, Pulse, Plus } from 'lucide-react';
+import { ArrowRight, Play, Star, CheckCircle, Heart, Activity, Shield, Plus } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { motion } from 'framer-motion';
@@ -28,7 +27,7 @@ const ModernHero: React.FC<ModernHeroProps> = ({ onShowAuth, onShowHealthID }) =
     { icon: Heart, color: 'text-red-500', value: '98%', label: 'Heart Health' },
     { icon: Activity, color: 'text-green-500', value: '95%', label: 'Vital Signs' },
     { icon: Shield, color: 'text-blue-500', value: '100%', label: 'Data Security' },
-    { icon: Pulse, color: 'text-purple-500', value: '24/7', label: 'Monitoring' }
+    { icon: Activity, color: 'text-purple-500', value: '24/7', label: 'Monitoring' }
   ];
 
   useEffect(() => {

@@ -9,18 +9,30 @@ import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
 
+interface MenuItem {
+  id: string;
+  title: string;
+  icon: React.ComponentType<any>;
+}
+
 interface DashboardLayoutProps {
   children: React.ReactNode;
   title: string;
   description?: string;
   headerActions?: React.ReactNode;
+  menuItems?: MenuItem[];
+  activeSection?: string;
+  onSectionChange?: (section: string) => void;
 }
 
 const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   children,
   title,
   description,
-  headerActions
+  headerActions,
+  menuItems,
+  activeSection,
+  onSectionChange
 }) => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -34,7 +46,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
     }
   }, [isAuthenticated, navigate]);
 
-  const sidebarItems = [
+  const defaultSidebarItems = [
     { name: "Dashboard", icon: <LayoutDashboard size={20} />, path: `/${user?.role}` },
     { name: "Analytics", icon: <BarChart3 size={20} />, path: `/${user?.role}/analytics` },
     { name: "Schedule", icon: <Calendar size={20} />, path: `/${user?.role}/schedule` },
@@ -47,6 +59,12 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
 
   const handleNavigation = (path: string) => {
     navigate(path);
+  };
+
+  const handleMenuItemClick = (itemId: string) => {
+    if (onSectionChange) {
+      onSectionChange(itemId);
+    }
   };
 
   if (!isAuthenticated) {
@@ -75,24 +93,47 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
 
       <div className="flex-1 py-4">
         <nav>
-          {sidebarItems.map((item) => {
-            const isActive = location.pathname === item.path;
-            
-            return (
-              <Button
-                key={item.name}
-                variant={isActive ? "default" : "ghost"}
-                className={cn(
-                  `w-full justify-${collapsed ? 'center' : 'start'} mb-1`,
-                  isActive ? 'bg-medisync-blue hover:bg-medisync-blue/90' : ''
-                )}
-                onClick={() => handleNavigation(item.path)}
-              >
-                <span>{item.icon}</span>
-                {!collapsed && <span className="ml-2">{item.name}</span>}
-              </Button>
-            );
-          })}
+          {menuItems ? (
+            // Use custom menu items if provided
+            menuItems.map((item) => {
+              const isActive = activeSection === item.id;
+              
+              return (
+                <Button
+                  key={item.id}
+                  variant={isActive ? "default" : "ghost"}
+                  className={cn(
+                    `w-full justify-${collapsed ? 'center' : 'start'} mb-1`,
+                    isActive ? 'bg-medisync-blue hover:bg-medisync-blue/90' : ''
+                  )}
+                  onClick={() => handleMenuItemClick(item.id)}
+                >
+                  <span><item.icon size={20} /></span>
+                  {!collapsed && <span className="ml-2">{item.title}</span>}
+                </Button>
+              );
+            })
+          ) : (
+            // Use default sidebar items for navigation
+            defaultSidebarItems.map((item) => {
+              const isActive = location.pathname === item.path;
+              
+              return (
+                <Button
+                  key={item.name}
+                  variant={isActive ? "default" : "ghost"}
+                  className={cn(
+                    `w-full justify-${collapsed ? 'center' : 'start'} mb-1`,
+                    isActive ? 'bg-medisync-blue hover:bg-medisync-blue/90' : ''
+                  )}
+                  onClick={() => handleNavigation(item.path)}
+                >
+                  <span>{item.icon}</span>
+                  {!collapsed && <span className="ml-2">{item.name}</span>}
+                </Button>
+              );
+            })
+          )}
         </nav>
       </div>
     </div>
