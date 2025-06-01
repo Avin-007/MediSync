@@ -1,36 +1,24 @@
+
 import React, { useState, useEffect } from 'react';
-import MapComponent from '@/components/MapComponent';
-import EmergencyRequest from '@/components/user/EmergencyRequest';
-import EmergencyStatus from '@/components/user/EmergencyStatus';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
 import { 
-  AlertCircle, Clock, BarChart, Brain, Stethoscope, ShoppingCart, PhoneCall, 
-  Droplet, Users, Wallet, CloudRain, CalendarCheck, MessageSquare, Bell,
-  Plane, Shield, Activity, Heart, TrendingUp, Zap, TestTube, Bed, User
+  Heart, Activity, Brain, Stethoscope, TestTube, Ambulance, 
+  Hospital, Users, MessageSquare, Wallet, Calendar, Bell,
+  Grid3X3, List, Search, Filter, Plus
 } from 'lucide-react';
-import DashboardLayout from '@/components/dashboard/DashboardLayout';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
-import HealthOverview from '@/components/user/HealthOverview';
-import SymptomTracker from '@/components/user/SymptomTracker';
-import DoctorFinder from '@/components/user/DoctorFinder';
-import MedicationMarketplace from '@/components/user/MedicationMarketplace';
-import BloodDonation from '@/components/user/BloodDonation';
-import FamilyRecords from '@/components/user/FamilyRecords';
-import PaymentCenter from '@/components/user/PaymentCenter';
-import WeatherHealthAlerts from '@/components/user/WeatherHealthAlerts';
+import { Input } from '@/components/ui/input';
 import HealthCard from '@/components/user/HealthCard';
-import InAppCommunication from '@/components/user/InAppCommunication';
-import HealthEvents from '@/components/user/HealthEvents';
-import AnalyticsWidget from '@/components/dashboard/AnalyticsWidget';
-import RemindersWidget from '@/components/dashboard/RemindersWidget';
-import ScheduleWidget from '@/components/dashboard/ScheduleWidget';
+import HealthOverview from '@/components/user/HealthOverview';
+import EmergencyRequest from '@/components/user/EmergencyRequest';
+import EmergencyStatus from '@/components/user/EmergencyStatus';
 
-// Import new comprehensive features
+// Import service components
 import LabServices from '@/components/user/LabServices';
 import HospitalServices from '@/components/user/HospitalServices';
 import ReportNotifications from '@/components/user/ReportNotifications';
@@ -41,392 +29,348 @@ import DroneDelivery from '@/components/emergency/DroneDelivery';
 import VirtualConsultation from '@/components/telemedicine/VirtualConsultation';
 import HealthNetwork from '@/components/community/HealthNetwork';
 import MentalHealthSupport from '@/components/mental-health/MentalHealthSupport';
+import MedicationMarketplace from '@/components/user/MedicationMarketplace';
+import InAppCommunication from '@/components/user/InAppCommunication';
+import PaymentCenter from '@/components/user/PaymentCenter';
 
 const UserPortal = () => {
   const { user } = useAuth();
   const { toast } = useToast();
   const { t, language } = useLanguage();
   const [hasActiveEmergency, setHasActiveEmergency] = useState(false);
-  const [activeTab, setActiveTab] = useState('dashboard');
-  const [reminders, setReminders] = useState([
-    { 
-      id: '1', 
-      title: language === 'en' ? 'Take Blood Pressure Medication' : 'रक्तचाप औषधि लिनुहोस्', 
-      time: '08:00 AM', 
-      priority: 'high' as const, 
-      completed: false 
-    },
-    { 
-      id: '2', 
-      title: language === 'en' ? 'Doctor Appointment' : 'डाक्टर भेट्ने समय', 
-      time: '10:30 AM', 
-      priority: 'medium' as const, 
-      completed: false 
-    },
-    { 
-      id: '3', 
-      title: language === 'en' ? 'Drink Water' : 'पानी पिउनुहोस्', 
-      time: '12:00 PM', 
-      priority: 'low' as const, 
-      completed: true 
-    }
-  ]);
-  
-  const [scheduleEvents, setScheduleEvents] = useState([
-    { 
-      id: '1',
-      title: language === 'en' ? 'Annual Health Checkup' : 'वार्षिक स्वास्थ्य जाँच',
-      time: '09:00 AM - 10:30 AM',
-      location: 'Bir Hospital',
-      assignee: 'Dr. Sharma',
-      status: 'upcoming' as const,
-      type: 'appointment' as const
-    },
-    { 
-      id: '2',
-      title: language === 'en' ? 'Blood Test Results' : 'रगत परीक्षण परिणाम',
-      time: '02:00 PM - 02:30 PM',
-      location: 'Lab Department',
-      assignee: 'Dr. Poudel',
-      status: 'upcoming' as const,
-      type: 'appointment' as const
-    }
-  ]);
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('all');
 
-  // Mock analytics data
-  const healthTrendsData = [
-    { name: 'Jan', bp: 120, glucose: 100, weight: 70 },
-    { name: 'Feb', bp: 125, glucose: 105, weight: 72 },
-    { name: 'Mar', bp: 123, glucose: 103, weight: 71 },
-    { name: 'Apr', bp: 130, glucose: 110, weight: 73 },
-    { name: 'May', bp: 127, glucose: 108, weight: 72 },
+  const serviceCategories = [
+    { id: 'all', name: 'All Services', icon: <Grid3X3 size={16} /> },
+    { id: 'health', name: 'Health & Wellness', icon: <Heart size={16} /> },
+    { id: 'emergency', name: 'Emergency', icon: <Ambulance size={16} /> },
+    { id: 'medical', name: 'Medical Services', icon: <Stethoscope size={16} /> },
+    { id: 'communication', name: 'Communication', icon: <MessageSquare size={16} /> },
+    { id: 'finance', name: 'Payments', icon: <Wallet size={16} /> },
   ];
+
+  const services = [
+    {
+      id: 'health-overview',
+      name: 'Health Overview',
+      description: 'View your complete health dashboard with vital stats',
+      icon: <Activity size={24} />,
+      category: 'health',
+      color: 'from-blue-500 to-blue-600',
+      component: 'health-overview'
+    },
+    {
+      id: 'emergency',
+      name: 'Emergency Services',
+      description: '24/7 emergency response and ambulance services',
+      icon: <Ambulance size={24} />,
+      category: 'emergency',
+      color: 'from-red-500 to-red-600',
+      component: 'emergency',
+      urgent: hasActiveEmergency
+    },
+    {
+      id: 'ai-health',
+      name: 'AI Health Assistant',
+      description: 'Smart health predictions and recommendations',
+      icon: <Brain size={24} />,
+      category: 'health',
+      color: 'from-purple-500 to-purple-600',
+      component: 'ai-health'
+    },
+    {
+      id: 'telemedicine',
+      name: 'Virtual Consultations',
+      description: 'Connect with doctors via video calls',
+      icon: <Stethoscope size={24} />,
+      category: 'medical',
+      color: 'from-green-500 to-green-600',
+      component: 'telemedicine'
+    },
+    {
+      id: 'lab-services',
+      name: 'Lab Services',
+      description: 'Book tests, view reports, track health metrics',
+      icon: <TestTube size={24} />,
+      category: 'medical',
+      color: 'from-cyan-500 to-cyan-600',
+      component: 'lab-services'
+    },
+    {
+      id: 'hospital-services',
+      name: 'Hospital Network',
+      description: 'Find hospitals, book appointments, manage visits',
+      icon: <Hospital size={24} />,
+      category: 'medical',
+      color: 'from-indigo-500 to-indigo-600',
+      component: 'hospital-services'
+    },
+    {
+      id: 'health-network',
+      name: 'Health Community',
+      description: 'Connect with patients and health professionals',
+      icon: <Users size={24} />,
+      category: 'communication',
+      color: 'from-pink-500 to-pink-600',
+      component: 'community'
+    },
+    {
+      id: 'communication',
+      name: 'Secure Messaging',
+      description: 'Chat securely with healthcare providers',
+      icon: <MessageSquare size={24} />,
+      category: 'communication',
+      color: 'from-teal-500 to-teal-600',
+      component: 'communication'
+    },
+    {
+      id: 'payments',
+      name: 'Payment Center',
+      description: 'Manage payments, insurance, and billing',
+      icon: <Wallet size={24} />,
+      category: 'finance',
+      color: 'from-amber-500 to-amber-600',
+      component: 'payments'
+    }
+  ];
+
+  const [activeService, setActiveService] = useState('health-overview');
+
+  const filteredServices = services.filter(service => {
+    const matchesCategory = selectedCategory === 'all' || service.category === selectedCategory;
+    const matchesSearch = service.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         service.description.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesCategory && matchesSearch;
+  });
 
   const handleRequestSubmit = (requestType: string) => {
     setHasActiveEmergency(true);
-    
     toast({
-      title: language === 'en' 
-        ? `${requestType === 'ambulance' ? 'Ambulance' : 'Nurse'} Requested` 
-        : `${requestType === 'ambulance' ? 'एम्बुलेन्स' : 'नर्स'} अनुरोध गरियो`,
-      description: language === 'en'
-        ? `Your ${requestType} request has been submitted successfully. Help is on the way.`
-        : `तपाईंको ${requestType === 'ambulance' ? 'एम्बुलेन्स' : 'नर्स'} अनुरोध सफलतापूर्वक पेश गरिएको छ। सहयोग आउँदैछ।`,
+      title: `${requestType} Requested`,
+      description: `Your ${requestType} request has been submitted successfully.`,
     });
   };
 
   const handleCancelEmergency = () => {
     setHasActiveEmergency(false);
-    
     toast({
-      title: t('cancel'),
-      description: language === 'en'
-        ? "Your emergency request has been cancelled."
-        : "तपाईंको आपतकालीन अनुरोध रद्द गरिएको छ।",
+      title: "Emergency Cancelled",
+      description: "Your emergency request has been cancelled.",
     });
   };
 
-  const handleCompleteReminder = (id: string) => {
-    setReminders(prev => 
-      prev.map(r => r.id === id ? { ...r, completed: true } : r)
-    );
+  const renderServiceContent = () => {
+    switch (activeService) {
+      case 'health-overview':
+        return <HealthOverview />;
+      case 'emergency':
+        return (
+          <div className="space-y-6">
+            {hasActiveEmergency ? (
+              <EmergencyStatus active={true} onCancel={handleCancelEmergency} />
+            ) : (
+              <EmergencyRequest onSubmit={handleRequestSubmit} />
+            )}
+          </div>
+        );
+      case 'ai-health':
+        return <HealthPredictor />;
+      case 'telemedicine':
+        return <VirtualConsultation />;
+      case 'lab-services':
+        return <LabServices />;
+      case 'hospital-services':
+        return <HospitalServices />;
+      case 'community':
+        return <HealthNetwork />;
+      case 'communication':
+        return <InAppCommunication />;
+      case 'payments':
+        return <PaymentCenter />;
+      default:
+        return <HealthOverview />;
+    }
   };
-
-  const handleAddScheduleEvent = () => {
-    toast({
-      title: t('scheduleEvent'),
-      description: t('scheduleEventDescription'),
-    });
-  };
-
-  // Update language-dependent state when language changes
-  useEffect(() => {
-    setReminders(prev => prev.map(r => ({
-      ...r,
-      title: r.id === '1' 
-        ? (language === 'en' ? 'Take Blood Pressure Medication' : 'रक्तचाप औषधि लिनुहोस्')
-        : r.id === '2'
-          ? (language === 'en' ? 'Doctor Appointment' : 'डाक्टर भेट्ने समय')
-          : (language === 'en' ? 'Drink Water' : 'पानी पिउनुहोस्')
-    })));
-
-    setScheduleEvents(prev => prev.map(e => ({
-      ...e,
-      title: e.id === '1'
-        ? (language === 'en' ? 'Annual Health Checkup' : 'वार्षिक स्वास्थ्य जाँच')
-        : (language === 'en' ? 'Blood Test Results' : 'रगत परीक्षण परिणाम')
-    })));
-  }, [language]);
 
   return (
-    <DashboardLayout 
-      title={t('patientPortal')} 
-      description={`${t('welcome')}, ${user?.name}`}
-      headerActions={
-        hasActiveEmergency ? (
-          <Badge variant="destructive" className="text-sm sm:text-md px-3 sm:px-4 py-1">
-            {t('active')} {t('emergency')}
-          </Badge>
-        ) : null
-      }
-    >
-      <div className="space-y-4 sm:space-y-6">
-        <Tabs defaultValue="dashboard" value={activeTab} onValueChange={setActiveTab} className="w-full">
-          {/* Responsive tab list with overflow scroll on mobile */}
-          <div className="w-full overflow-x-auto">
-            <TabsList className="inline-flex w-max min-w-full grid-cols-none gap-1 p-1 h-auto">
-              <TabsTrigger value="dashboard" className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-2 text-xs sm:text-sm whitespace-nowrap">
-                <BarChart size={14} />
-                <span className="hidden sm:inline">Dashboard</span>
-                <span className="sm:hidden">Home</span>
-              </TabsTrigger>
-              <TabsTrigger value="emergency" className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-2 text-xs sm:text-sm whitespace-nowrap relative">
-                <AlertCircle size={14} />
-                <span className="hidden sm:inline">Emergency</span>
-                <span className="sm:hidden">SOS</span>
-                {hasActiveEmergency && (
-                  <span className="absolute top-0 right-0 h-2 w-2 bg-red-500 rounded-full"></span>
-                )}
-              </TabsTrigger>
-              <TabsTrigger value="lab-services" className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-2 text-xs sm:text-sm whitespace-nowrap">
-                <TestTube size={14} />
-                <span className="hidden sm:inline">Lab Services</span>
-                <span className="sm:hidden">Lab</span>
-              </TabsTrigger>
-              <TabsTrigger value="hospital-services" className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-2 text-xs sm:text-sm whitespace-nowrap">
-                <Bed size={14} />
-                <span className="hidden sm:inline">Hospitals</span>
-                <span className="sm:hidden">Hospital</span>
-              </TabsTrigger>
-              <TabsTrigger value="reports" className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-2 text-xs sm:text-sm whitespace-nowrap">
-                <Bell size={14} />
-                <span className="hidden sm:inline">Reports</span>
-                <span className="sm:hidden">Reports</span>
-              </TabsTrigger>
-              <TabsTrigger value="ai-health" className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-2 text-xs sm:text-sm whitespace-nowrap">
-                <Brain size={14} />
-                <span className="hidden sm:inline">AI Health</span>
-                <span className="sm:hidden">AI</span>
-              </TabsTrigger>
-              <TabsTrigger value="iot" className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-2 text-xs sm:text-sm whitespace-nowrap">
-                <Activity size={14} />
-                <span className="hidden sm:inline">IoT Devices</span>
-                <span className="sm:hidden">IoT</span>
-              </TabsTrigger>
-              <TabsTrigger value="blockchain" className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-2 text-xs sm:text-sm whitespace-nowrap">
-                <Shield size={14} />
-                <span className="hidden sm:inline">Records</span>
-                <span className="sm:hidden">Records</span>
-              </TabsTrigger>
-              <TabsTrigger value="telemedicine" className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-2 text-xs sm:text-sm whitespace-nowrap">
-                <Stethoscope size={14} />
-                <span className="hidden sm:inline">Telemedicine</span>
-                <span className="sm:hidden">Tele</span>
-              </TabsTrigger>
-              <TabsTrigger value="drone" className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-2 text-xs sm:text-sm whitespace-nowrap">
-                <Plane size={14} />
-                <span className="hidden sm:inline">Drone</span>
-                <span className="sm:hidden">Drone</span>
-              </TabsTrigger>
-              <TabsTrigger value="mental-health" className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-2 text-xs sm:text-sm whitespace-nowrap">
-                <Heart size={14} />
-                <span className="hidden sm:inline">Mental Health</span>
-                <span className="sm:hidden">Mental</span>
-              </TabsTrigger>
-              <TabsTrigger value="community" className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-2 text-xs sm:text-sm whitespace-nowrap">
-                <Users size={14} />
-                <span className="hidden sm:inline">Community</span>
-                <span className="sm:hidden">Community</span>
-              </TabsTrigger>
-              <TabsTrigger value="marketplace" className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-2 text-xs sm:text-sm whitespace-nowrap">
-                <ShoppingCart size={14} />
-                <span className="hidden sm:inline">Marketplace</span>
-                <span className="sm:hidden">Shop</span>
-              </TabsTrigger>
-              <TabsTrigger value="communication" className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-2 text-xs sm:text-sm whitespace-nowrap">
-                <MessageSquare size={14} />
-                <span className="hidden sm:inline">Communication</span>
-                <span className="sm:hidden">Chat</span>
-              </TabsTrigger>
-              <TabsTrigger value="payments" className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-2 text-xs sm:text-sm whitespace-nowrap">
-                <Wallet size={14} />
-                <span className="hidden sm:inline">Payments</span>
-                <span className="sm:hidden">Pay</span>
-              </TabsTrigger>
-            </TabsList>
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50">
+      {/* Modern Header */}
+      <div className="bg-white/80 backdrop-blur-md border-b sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16">
+            <div className="flex items-center space-x-4">
+              <div className="flex items-center space-x-3">
+                <div className="h-10 w-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
+                  <Heart size={20} className="text-white" />
+                </div>
+                <div>
+                  <h1 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                    MediSync
+                  </h1>
+                  <p className="text-sm text-gray-500">Welcome back, {user?.name}</p>
+                </div>
+              </div>
+            </div>
+            
+            <div className="flex items-center space-x-4">
+              {hasActiveEmergency && (
+                <Badge variant="destructive" className="animate-pulse">
+                  Emergency Active
+                </Badge>
+              )}
+              <Button variant="outline" size="icon">
+                <Bell size={16} />
+              </Button>
+              <Button variant="outline" size="icon">
+                <Calendar size={16} />
+              </Button>
+            </div>
           </div>
-        
-          {/* Dashboard Tab */}
-          <TabsContent value="dashboard" className="space-y-4 sm:space-y-6 mt-4 sm:mt-6">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
-              <div className="lg:col-span-2">
-                <HealthOverview />
-              </div>
-              <div>
-                <HealthCard />
-              </div>
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+          {/* Left Sidebar - Health Card */}
+          <div className="lg:col-span-1">
+            <div className="sticky top-24 space-y-6">
+              <HealthCard />
+              
+              {/* Quick Stats */}
+              <Card className="bg-gradient-to-br from-blue-50 to-purple-50 border-0">
+                <CardContent className="p-4">
+                  <h3 className="font-semibold mb-4">Quick Stats</h3>
+                  <div className="space-y-3">
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-gray-600">Health Score</span>
+                      <span className="font-bold text-green-600">95/100</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-gray-600">Upcoming</span>
+                      <span className="font-bold text-blue-600">2 appts</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-gray-600">Medications</span>
+                      <span className="font-bold text-purple-600">3 active</span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
             </div>
-            
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
-              <AnalyticsWidget 
-                title={t('healthTrends')}
-                data={healthTrendsData}
-                chartType="area"
-                categories={['bp', 'glucose', 'weight']}
-              />
-              <RemindersWidget 
-                reminders={reminders}
-                onComplete={handleCompleteReminder}
-              />
-              <ScheduleWidget 
-                events={scheduleEvents}
-                onAddEvent={handleAddScheduleEvent}
-              />
-            </div>
-            
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
-              <WeatherHealthAlerts />
-              <HealthEvents />
-            </div>
-          </TabsContent>
-          
-          {/* Emergency Tab */}
-          <TabsContent value="emergency" className="mt-4 sm:mt-6 space-y-4 sm:space-y-6">
-            <div className="grid grid-cols-1 xl:grid-cols-3 gap-4 sm:gap-6">
-              <div className="xl:col-span-2">
-                <Card className="border-2 border-nepal-crimson overflow-hidden">
-                  <MapComponent 
-                    emergencies={hasActiveEmergency ? [{ name: language === 'en' ? "Active Emergency" : "सक्रिय आपतकालीन", lat: 27.7172, lng: 85.3240 }] : []} 
-                  />
-                </Card>
-              </div>
-              <div className="space-y-4 sm:space-y-6">
-                {hasActiveEmergency ? (
-                  <EmergencyStatus 
-                    active={true} 
-                    onCancel={handleCancelEmergency}
-                  />
-                ) : (
-                  <EmergencyRequest 
-                    onSubmit={handleRequestSubmit}
-                  />
-                )}
+          </div>
+
+          {/* Main Content Area */}
+          <div className="lg:col-span-3">
+            <div className="space-y-6">
+              {/* Service Navigation */}
+              <Card className="bg-white/80 backdrop-blur-md border-0 shadow-lg">
+                <CardHeader className="pb-4">
+                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div>
+                      <CardTitle className="text-xl">Health Services</CardTitle>
+                      <p className="text-gray-500">Access all your healthcare needs in one place</p>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Button
+                        variant={viewMode === 'grid' ? 'default' : 'outline'}
+                        size="sm"
+                        onClick={() => setViewMode('grid')}
+                      >
+                        <Grid3X3 size={16} />
+                      </Button>
+                      <Button
+                        variant={viewMode === 'list' ? 'default' : 'outline'}
+                        size="sm"
+                        onClick={() => setViewMode('list')}
+                      >
+                        <List size={16} />
+                      </Button>
+                    </div>
+                  </div>
+                </CardHeader>
                 
-                {!hasActiveEmergency && (
-                  <Card>
-                    <CardHeader>
-                      <CardTitle className="text-lg sm:text-xl">{t('emergencyContacts')}</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="space-y-4">
-                        <div className="p-3 sm:p-4 bg-red-50 border border-red-100 rounded-md flex items-center justify-between">
-                          <div>
-                            <h3 className="font-medium text-sm sm:text-base">{language === 'en' ? 'Emergency Hotline' : 'आपतकालीन हटलाइन'}</h3>
-                            <p className="text-xl sm:text-2xl font-bold text-red-600">102</p>
+                <CardContent>
+                  {/* Search and Filter */}
+                  <div className="flex flex-col sm:flex-row gap-4 mb-6">
+                    <div className="relative flex-1">
+                      <Search size={16} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                      <Input
+                        placeholder="Search services..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className="pl-10"
+                      />
+                    </div>
+                    <div className="flex gap-2 overflow-x-auto">
+                      {serviceCategories.map((category) => (
+                        <Button
+                          key={category.id}
+                          variant={selectedCategory === category.id ? 'default' : 'outline'}
+                          size="sm"
+                          onClick={() => setSelectedCategory(category.id)}
+                          className="whitespace-nowrap"
+                        >
+                          {category.icon}
+                          <span className="ml-2">{category.name}</span>
+                        </Button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Services Grid/List */}
+                  <div className={viewMode === 'grid' 
+                    ? "grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4" 
+                    : "space-y-3"
+                  }>
+                    {filteredServices.map((service) => (
+                      <div
+                        key={service.id}
+                        className={`group cursor-pointer transition-all duration-300 ${
+                          viewMode === 'grid'
+                            ? 'bg-white rounded-xl p-4 border border-gray-100 hover:border-blue-200 hover:shadow-lg hover:-translate-y-1'
+                            : 'bg-white rounded-lg p-3 border border-gray-100 hover:border-blue-200 hover:shadow-md flex items-center'
+                        } ${activeService === service.id ? 'ring-2 ring-blue-500 bg-blue-50' : ''}`}
+                        onClick={() => setActiveService(service.id)}
+                      >
+                        <div className={`flex ${viewMode === 'grid' ? 'flex-col' : 'items-center space-x-4 flex-1'}`}>
+                          <div className={`${viewMode === 'grid' ? 'mb-3' : ''}`}>
+                            <div className={`w-12 h-12 bg-gradient-to-br ${service.color} rounded-xl flex items-center justify-center text-white group-hover:scale-110 transition-transform`}>
+                              {service.icon}
+                            </div>
                           </div>
-                          <Button 
-                            size="icon" 
-                            className="rounded-full bg-red-100 text-red-600 hover:bg-red-200 hover:text-red-700 h-10 w-10 sm:h-12 sm:w-12"
-                          >
-                            <PhoneCall size={16} className="sm:w-5 sm:h-5" />
-                          </Button>
-                        </div>
-                        <div className="p-3 sm:p-4 bg-blue-50 border border-blue-100 rounded-md flex items-center justify-between">
-                          <div>
-                            <h3 className="font-medium text-sm sm:text-base">{language === 'en' ? 'Medical Support' : 'चिकित्सा सहायता'}</h3>
-                            <p className="text-xs sm:text-sm">+977-1-4476225</p>
+                          <div className={viewMode === 'grid' ? '' : 'flex-1'}>
+                            <div className="flex items-center space-x-2 mb-1">
+                              <h3 className="font-semibold text-gray-900">{service.name}</h3>
+                              {service.urgent && (
+                                <Badge variant="destructive" className="text-xs animate-pulse">
+                                  Active
+                                </Badge>
+                              )}
+                            </div>
+                            <p className={`text-gray-600 ${viewMode === 'grid' ? 'text-sm' : 'text-xs'}`}>
+                              {service.description}
+                            </p>
                           </div>
-                          <Button 
-                            size="icon" 
-                            variant="outline" 
-                            className="rounded-full border-blue-200 text-blue-600 hover:bg-blue-100 h-10 w-10 sm:h-12 sm:w-12"
-                          >
-                            <PhoneCall size={16} className="sm:w-5 sm:h-5" />
-                          </Button>
-                        </div>
-                        <div className="p-3 sm:p-4 bg-green-50 border border-green-100 rounded-md flex items-center justify-between">
-                          <div>
-                            <h3 className="font-medium text-sm sm:text-base">{language === 'en' ? 'Nurse On-Call' : 'नर्स अन-कल'}</h3>
-                            <p className="text-xs sm:text-sm">+977-1-4478215</p>
-                          </div>
-                          <Button 
-                            size="icon" 
-                            variant="outline" 
-                            className="rounded-full border-green-200 text-green-600 hover:bg-green-100 h-10 w-10 sm:h-12 sm:w-12"
-                          >
-                            <PhoneCall size={16} className="sm:w-5 sm:h-5" />
-                          </Button>
                         </div>
                       </div>
-                    </CardContent>
-                  </Card>
-                )}
-              </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Active Service Content */}
+              <Card className="bg-white/80 backdrop-blur-md border-0 shadow-lg">
+                <CardContent className="p-6">
+                  {renderServiceContent()}
+                </CardContent>
+              </Card>
             </div>
-          </TabsContent>
-
-          {/* All other tabs - keep existing structure but ensure responsive spacing */}
-          <TabsContent value="lab-services" className="mt-4 sm:mt-6 space-y-4 sm:space-y-6">
-            <LabServices />
-          </TabsContent>
-
-          <TabsContent value="hospital-services" className="mt-4 sm:mt-6 space-y-4 sm:space-y-6">
-            <HospitalServices />
-          </TabsContent>
-
-          <TabsContent value="reports" className="mt-4 sm:mt-6 space-y-4 sm:space-y-6">
-            <ReportNotifications />
-          </TabsContent>
-
-          <TabsContent value="ai-health" className="mt-4 sm:mt-6 space-y-4 sm:space-y-6">
-            <HealthPredictor />
-          </TabsContent>
-
-          <TabsContent value="iot" className="mt-4 sm:mt-6 space-y-4 sm:space-y-6">
-            <DeviceMonitoring />
-          </TabsContent>
-
-          <TabsContent value="blockchain" className="mt-4 sm:mt-6 space-y-4 sm:space-y-6">
-            <HealthRecords />
-          </TabsContent>
-
-          <TabsContent value="telemedicine" className="mt-4 sm:mt-6 space-y-4 sm:space-y-6">
-            <VirtualConsultation />
-          </TabsContent>
-
-          <TabsContent value="drone" className="mt-4 sm:mt-6 space-y-4 sm:space-y-6">
-            <DroneDelivery />
-          </TabsContent>
-
-          <TabsContent value="mental-health" className="mt-4 sm:mt-6 space-y-4 sm:space-y-6">
-            <MentalHealthSupport />
-          </TabsContent>
-
-          <TabsContent value="community" className="mt-4 sm:mt-6 space-y-4 sm:space-y-6">
-            <HealthNetwork />
-          </TabsContent>
-          
-          <TabsContent value="marketplace" className="mt-4 sm:mt-6 space-y-4 sm:space-y-6">
-            <MedicationMarketplace />
-          </TabsContent>
-
-          <TabsContent value="communication" className="mt-4 sm:mt-6 space-y-4 sm:space-y-6">
-            <InAppCommunication />
-          </TabsContent>
-          
-          <TabsContent value="payments" className="mt-4 sm:mt-6 space-y-4 sm:space-y-6">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
-              <div className="lg:col-span-2">
-                <PaymentCenter />
-              </div>
-              <div>
-                <HealthCard />
-              </div>
-            </div>
-          </TabsContent>
-        </Tabs>
+          </div>
+        </div>
       </div>
-    </DashboardLayout>
+    </div>
   );
 };
 
