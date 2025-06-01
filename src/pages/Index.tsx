@@ -1,235 +1,318 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import Header from '@/components/Header';
+import ModernLogo from '@/components/ModernLogo';
+import ModernHero from '@/components/ModernHero';
+import ModernFeaturesSection from '@/components/ModernFeaturesSection';
 import ResponsiveRoleSelection from '@/components/home/ResponsiveRoleSelection';
-import ResponsiveServicesSection from '@/components/home/ResponsiveServicesSection';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import IntegratedAuth from '@/components/IntegratedAuth';
+import HealthIDCard from '@/components/HealthIDCard';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { ArrowRight, Brain, Map, AlertCircle, Phone, MessageSquare, Wallet, Flag, Shield, HeartPulse } from 'lucide-react';
+import { Card, CardContent } from '@/components/ui/card';
+import { 
+  ArrowRight, 
+  CheckCircle, 
+  Star, 
+  Flag, 
+  Heart, 
+  Shield, 
+  Zap,
+  MapPin,
+  Clock,
+  Phone,
+  Award,
+  Users,
+  Activity
+} from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useAuth } from '@/contexts/AuthContext';
 
 const Index = () => {
   const { t } = useLanguage();
-  
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
-      <Header />
-      
-      {/* Hero Section */}
-      <section className="px-4 sm:px-6 lg:px-8 pt-8 pb-12">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center space-y-6 mb-12">
-            <div className="space-y-4">
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight">
-                <span className="text-blue-600">मेडि</span>
-                <span className="text-red-500">सिंक</span>
-                <div className="text-gray-900 mt-2">{t('completeHealthcare')}</div>
-              </h1>
-              <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-                {t('healthcareDescription')}
-              </p>
-            </div>
-            
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 text-lg">
-                {t('getStarted')} <ArrowRight className="ml-2" size={20} />
-              </Button>
-              <Button size="lg" variant="outline" className="border-red-500 text-red-500 hover:bg-red-50 px-8 py-4 text-lg">
-                {t('learnMore')}
-              </Button>
-            </div>
+  const { isAuthenticated } = useAuth();
+  const [showAuth, setShowAuth] = useState(false);
+  const [showHealthID, setShowHealthID] = useState(false);
 
-            {/* Feature badges */}
-            <div className="flex flex-wrap justify-center gap-2 sm:gap-3 pt-6">
-              <FeatureBadge icon={Brain} text={t('aiPowered')} />
-              <FeatureBadge icon={Map} text={t('realTimeTracking')} />
-              <FeatureBadge icon={AlertCircle} text={t('emergencyResponse')} />
-              <FeatureBadge icon={Phone} text={t('inAppCalling')} />
-              <FeatureBadge icon={MessageSquare} text={t('inAppMessaging')} />
-              <FeatureBadge icon={Wallet} text={t('healthCard')} />
+  const testimonials = [
+    {
+      name: "Dr. Anjana Sharma",
+      role: "Cardiologist",
+      location: "Kathmandu",
+      text: "MediSync has revolutionized how we manage patient care. The real-time data sharing saves lives.",
+      rating: 5
+    },
+    {
+      name: "Ram Bahadur",
+      role: "Patient",
+      location: "Pokhara", 
+      text: "Getting emergency help has never been easier. The ambulance reached me in just 8 minutes!",
+      rating: 5
+    }
+  ];
+
+  const offers = [
+    {
+      title: "Free Health Checkup",
+      description: "Complete health package for new users",
+      badge: "50% OFF",
+      color: "from-red-500 to-pink-500"
+    },
+    {
+      title: "24/7 Telemedicine",
+      description: "Connect with doctors anytime",
+      badge: "FREE",
+      color: "from-green-500 to-emerald-500"
+    },
+    {
+      title: "Lab Tests at Home",
+      description: "Sample collection at your doorstep",
+      badge: "NEW",
+      color: "from-blue-500 to-cyan-500"
+    }
+  ];
+
+  return (
+    <div className="min-h-screen bg-white overflow-x-hidden">
+      {/* Updated Header with Modern Logo */}
+      <header className="border-b bg-white/95 backdrop-blur-md py-4 px-6 flex items-center justify-between sticky top-0 z-40">
+        <ModernLogo />
+        <div className="flex items-center gap-4">
+          <Button 
+            variant="ghost" 
+            className="hidden sm:flex"
+          >
+            Features
+          </Button>
+          <Button 
+            variant="ghost" 
+            className="hidden sm:flex"
+          >
+            About
+          </Button>
+          
+          {!isAuthenticated ? (
+            <Button 
+              onClick={() => setShowAuth(true)}
+              className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white"
+            >
+              Get Started
+            </Button>
+          ) : (
+            <Button 
+              onClick={() => setShowHealthID(true)}
+              className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white"
+            >
+              <Heart className="mr-2" size={16} />
+              My Health ID
+            </Button>
+          )}
+        </div>
+      </header>
+
+      {/* Hero Section */}
+      <ModernHero 
+        onShowAuth={() => setShowAuth(true)}
+        onShowHealthID={() => setShowHealthID(true)}
+      />
+
+      {/* Features Section */}
+      <ModernFeaturesSection />
+
+      {/* Role Selection Section */}
+      <section className="py-20 bg-gradient-to-br from-gray-50 to-blue-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <Badge className="mb-4 bg-purple-100 text-purple-800 hover:bg-purple-200 px-4 py-2">
+              <Users size={16} className="mr-2" />
+              Access by Role
+            </Badge>
+            <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
+              Choose Your
+              <span className="block text-transparent bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text">
+                Healthcare Role
+              </span>
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Access specialized features and services tailored to your healthcare needs
+            </p>
+          </div>
+          <ResponsiveRoleSelection />
+        </div>
+      </section>
+
+      {/* Special Offers Section */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <Badge className="mb-4 bg-orange-100 text-orange-800 hover:bg-orange-200 px-4 py-2">
+              <Zap size={16} className="mr-2" />
+              Limited Time Offers
+            </Badge>
+            <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
+              Exclusive Health
+              <span className="block text-transparent bg-gradient-to-r from-orange-500 to-red-500 bg-clip-text">
+                Promotions
+              </span>
+            </h2>
+          </div>
+          
+          <div className="grid md:grid-cols-3 gap-8">
+            {offers.map((offer, index) => (
+              <Card key={index} className="group border-0 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 overflow-hidden">
+                <div className={`h-2 bg-gradient-to-r ${offer.color}`}></div>
+                <CardContent className="p-8 text-center">
+                  <Badge className={`mb-4 bg-gradient-to-r ${offer.color} text-white text-sm px-3 py-1`}>
+                    {offer.badge}
+                  </Badge>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-4">{offer.title}</h3>
+                  <p className="text-gray-600 mb-6">{offer.description}</p>
+                  <Button className={`w-full bg-gradient-to-r ${offer.color} text-white hover:opacity-90`}>
+                    Claim Offer
+                  </Button>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials Section */}
+      <section className="py-20 bg-gradient-to-br from-blue-50 to-purple-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <Badge className="mb-4 bg-yellow-100 text-yellow-800 hover:bg-yellow-200 px-4 py-2">
+              <Award size={16} className="mr-2" />
+              Success Stories
+            </Badge>
+            <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
+              What Our Users
+              <span className="block text-transparent bg-gradient-to-r from-yellow-500 to-orange-500 bg-clip-text">
+                Are Saying
+              </span>
+            </h2>
+          </div>
+          
+          <div className="grid md:grid-cols-2 gap-8">
+            {testimonials.map((testimonial, index) => (
+              <Card key={index} className="border-0 shadow-lg bg-white/80 backdrop-blur-sm">
+                <CardContent className="p-8">
+                  <div className="flex items-center mb-4">
+                    {[...Array(testimonial.rating)].map((_, i) => (
+                      <Star key={i} size={20} className="text-yellow-400 fill-current" />
+                    ))}
+                  </div>
+                  <p className="text-gray-700 text-lg leading-relaxed mb-6 italic">
+                    "{testimonial.text}"
+                  </p>
+                  <div className="flex items-center">
+                    <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-lg mr-4">
+                      {testimonial.name.charAt(0)}
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-gray-900">{testimonial.name}</h4>
+                      <p className="text-gray-600 text-sm">{testimonial.role} • {testimonial.location}</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Nepal Heritage Section */}
+      <section className="py-20 bg-gradient-to-r from-blue-600 via-purple-600 to-red-500 text-white relative overflow-hidden">
+        <div className="absolute inset-0 bg-black/20"></div>
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <Flag size={64} className="mx-auto mb-8 animate-pulse" />
+          <h2 className="text-4xl lg:text-5xl font-bold mb-6">
+            Proudly Serving
+            <span className="block">नेपाल</span>
+          </h2>
+          <p className="text-xl text-white/90 max-w-3xl mx-auto leading-relaxed mb-8">
+            Bridging traditional healthcare with modern technology to serve every corner of Nepal
+          </p>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mt-12">
+            <div className="text-center">
+              <MapPin size={32} className="mx-auto mb-4" />
+              <div className="text-2xl font-bold">77 Districts</div>
+              <div className="text-white/80">Coverage</div>
+            </div>
+            <div className="text-center">
+              <Clock size={32} className="mx-auto mb-4" />
+              <div className="text-2xl font-bold">24/7</div>
+              <div className="text-white/80">Emergency</div>
+            </div>
+            <div className="text-center">
+              <Phone size={32} className="mx-auto mb-4" />
+              <div className="text-2xl font-bold">5 Languages</div>
+              <div className="text-white/80">Support</div>
+            </div>
+            <div className="text-center">
+              <Activity size={32} className="mx-auto mb-4" />
+              <div className="text-2xl font-bold">ISO Certified</div>
+              <div className="text-white/80">Quality</div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Main Content */}
-      <main className="px-4 sm:px-6 lg:px-8 pb-16">
-        <div className="max-w-7xl mx-auto space-y-16">
-          
-          {/* Role Selection Section */}
-          <section className="space-y-8">
-            <div className="text-center">
-              <Badge className="mb-4 bg-blue-100 text-blue-800 hover:bg-blue-200">
-                {t('selectYourRole')}
-              </Badge>
-              <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-                {t('accessSpecializedFeatures')}
-              </h2>
-              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                Choose your role to access tailored features and services
-              </p>
-            </div>
-            <ResponsiveRoleSelection />
-          </section>
-
-          {/* Services Section */}
-          <ResponsiveServicesSection />
-
-          {/* Quick Stats */}
-          <section className="bg-white rounded-2xl shadow-xl p-8 sm:p-12">
-            <div className="text-center mb-8">
-              <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-                Trusted by Thousands
-              </h2>
-              <p className="text-lg text-gray-600">
-                Making healthcare accessible across Nepal
-              </p>
-            </div>
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
-              <StatCard number="50K+" label="Active Users" color="text-blue-600" />
-              <StatCard number="200+" label="Partner Hospitals" color="text-green-600" />
-              <StatCard number="1000+" label="Emergency Responses" color="text-red-600" />
-              <StatCard number="24/7" label="Support Available" color="text-purple-600" />
-            </div>
-          </section>
-
-          {/* Core Features */}
-          <section className="space-y-8">
-            <div className="text-center">
-              <Badge className="mb-4 bg-green-100 text-green-800 hover:bg-green-200">
-                Core Features
-              </Badge>
-              <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-                Comprehensive Healthcare Solutions
-              </h2>
-              <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-                Everything you need for modern healthcare management in one platform
-              </p>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              <FeatureCard 
-                icon={Shield}
-                title="Unique Health ID"
-                description="Secure digital identity for all your medical records"
-                color="bg-blue-500"
-              />
-              <FeatureCard 
-                icon={HeartPulse}
-                title="Emergency Services"
-                description="24/7 emergency response and ambulance tracking"
-                color="bg-red-500"
-              />
-              <FeatureCard 
-                icon={Wallet}
-                title="Digital Health Card"
-                description="Instant access to your health information anywhere"
-                color="bg-green-500"
-              />
-              <FeatureCard 
-                icon={Brain}
-                title="AI Health Assistant"
-                description="Smart health recommendations and symptom analysis"
-                color="bg-purple-500"
-              />
-              <FeatureCard 
-                icon={MessageSquare}
-                title="Secure Communication"
-                description="Direct messaging with healthcare providers"
-                color="bg-indigo-500"
-              />
-              <FeatureCard 
-                icon={Map}
-                title="Location Services"
-                description="Find nearby hospitals and healthcare facilities"
-                color="bg-orange-500"
-              />
-            </div>
-          </section>
-
-          {/* Nepal Heritage Banner */}
-          <section className="relative overflow-hidden rounded-2xl">
-            <div className="absolute inset-0 bg-gradient-to-r from-blue-600/90 to-red-500/80"></div>
-            <div className="relative z-10 text-white p-8 sm:p-12 text-center">
-              <Flag size={48} className="mx-auto mb-6 text-white" />
-              <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-                {t('nepalHealthInitiative')}
-              </h2>
-              <p className="text-lg sm:text-xl text-white/90 max-w-3xl mx-auto leading-relaxed">
-                {t('nepalHealthInitiativeDescription')}
-              </p>
-            </div>
-          </section>
-
-          {/* Call to Action */}
-          <section className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl text-white p-8 sm:p-12">
-            <div className="text-center space-y-6">
-              <h2 className="text-3xl sm:text-4xl font-bold">
-                Ready to Transform Healthcare?
-              </h2>
-              <p className="text-lg sm:text-xl text-white/90 max-w-2xl mx-auto">
-                Join thousands of users already experiencing better healthcare with MediSync
-              </p>
-              <Button size="lg" variant="outline" className="bg-white text-blue-600 hover:bg-gray-100 px-8 py-4 text-lg">
-                Get Started Today
+      {/* Final CTA Section */}
+      <section className="py-20 bg-gradient-to-br from-gray-900 to-blue-900 text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <div className="max-w-3xl mx-auto">
+            <h2 className="text-4xl lg:text-5xl font-bold mb-6">
+              Ready to Transform
+              <span className="block text-transparent bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text">
+                Your Healthcare?
+              </span>
+            </h2>
+            <p className="text-xl text-gray-300 mb-8">
+              Join thousands of users who are already experiencing better healthcare with MediSync
+            </p>
+            {!isAuthenticated ? (
+              <Button 
+                size="lg" 
+                className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-12 py-6 text-xl shadow-2xl hover:shadow-blue-500/25 transform hover:scale-105 transition-all"
+                onClick={() => setShowAuth(true)}
+              >
+                Start Your Health Journey <ArrowRight className="ml-3" size={24} />
               </Button>
-            </div>
-          </section>
+            ) : (
+              <Button 
+                size="lg" 
+                className="bg-gradient-to-r from-green-500 to-blue-600 hover:from-green-600 hover:to-blue-700 text-white px-12 py-6 text-xl shadow-2xl hover:shadow-green-500/25 transform hover:scale-105 transition-all"
+                onClick={() => setShowHealthID(true)}
+              >
+                Access Your Dashboard <Heart className="ml-3" size={24} />
+              </Button>
+            )}
+          </div>
         </div>
-      </main>
-    </div>
-  );
-};
+      </section>
 
-// Helper Components
-interface FeatureBadgeProps {
-  icon: React.ComponentType<any>;
-  text: string;
-}
+      {/* Auth Modal */}
+      {showAuth && (
+        <IntegratedAuth onClose={() => setShowAuth(false)} />
+      )}
 
-const FeatureBadge: React.FC<FeatureBadgeProps> = ({ icon: Icon, text }) => {
-  return (
-    <div className="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium bg-gray-100 text-gray-800 gap-2">
-      <Icon size={14} />
-      <span>{text}</span>
-    </div>
-  );
-};
-
-interface StatCardProps {
-  number: string;
-  label: string;
-  color: string;
-}
-
-const StatCard: React.FC<StatCardProps> = ({ number, label, color }) => {
-  return (
-    <div className="text-center">
-      <div className={`text-3xl sm:text-4xl font-bold ${color} mb-2`}>{number}</div>
-      <div className="text-gray-600 text-sm sm:text-base">{label}</div>
-    </div>
-  );
-};
-
-interface FeatureCardProps {
-  icon: React.ComponentType<any>;
-  title: string;
-  description: string;
-  color: string;
-}
-
-const FeatureCard: React.FC<FeatureCardProps> = ({ icon: Icon, title, description, color }) => {
-  return (
-    <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-      <CardContent className="p-6">
-        <div className={`w-12 h-12 ${color} rounded-xl flex items-center justify-center mb-4`}>
-          <Icon size={24} className="text-white" />
+      {/* Health ID Modal */}
+      {showHealthID && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="relative">
+            <Button
+              variant="ghost"
+              className="absolute -top-12 right-0 text-white hover:text-gray-300"
+              onClick={() => setShowHealthID(false)}
+            >
+              ✕ Close
+            </Button>
+            <HealthIDCard />
+          </div>
         </div>
-        <h3 className="text-xl font-semibold text-gray-900 mb-2">{title}</h3>
-        <p className="text-gray-600 leading-relaxed">{description}</p>
-      </CardContent>
-    </Card>
+      )}
+    </div>
   );
 };
 
