@@ -23,6 +23,7 @@ import RemindersPage from "./pages/features/RemindersPage";
 import LocationPage from "./pages/features/LocationPage";
 import MessagesPage from "./pages/features/MessagesPage";
 import ProfilePage from "./pages/features/ProfilePage";
+import { Suspense } from "react";
 
 const queryClient = new QueryClient();
 
@@ -168,21 +169,25 @@ const AppRoutes = () => {
 
 function App() {
   return (
-    <HashRouter>
-      <QueryClientProvider client={queryClient}>
-        <AuthProvider>
-          <LanguageProvider>
-            <TooltipProvider>
-              {/* Routes */}
-              <AppRoutes />
-              {/* Toasts */}
-              <Toaster />
-              <Sonner />
-            </TooltipProvider>
-          </LanguageProvider>
-        </AuthProvider>
-      </QueryClientProvider>
-    </HashRouter>
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>
+      </div>
+    }>
+      <HashRouter basename="/">
+        <QueryClientProvider client={queryClient}>
+          <AuthProvider>
+            <LanguageProvider>
+              <TooltipProvider>
+                <AppRoutes />
+                <Toaster />
+                <Sonner />
+              </TooltipProvider>
+            </LanguageProvider>
+          </AuthProvider>
+        </QueryClientProvider>
+      </HashRouter>
+    </Suspense>
   );
 }
 
