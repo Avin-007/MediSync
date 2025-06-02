@@ -19,5 +19,5 @@ export default defineConfig(({ mode }) => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
-  base: "/MediSync/",
+  base: mode === 'development' ? '/' : '/MediSync/',
 }));
