@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import DashboardLayout from '@/components/dashboard/DashboardLayout';
 import HealthCard from '@/components/user/HealthCard';
@@ -43,6 +42,8 @@ import {
   Gamepad2,
   Smartphone
 } from 'lucide-react';
+
+import ChatbotButton from '@/components/ai/ChatbotButton';
 
 const UserPortal = () => {
   const [activeSection, setActiveSection] = useState('overview');
@@ -182,14 +183,19 @@ const UserPortal = () => {
   ];
 
   return (
-    <DashboardLayout 
-      title="Patient Portal" 
-      menuItems={menuItems}
-      activeSection={activeSection}
-      onSectionChange={setActiveSection}
-    >
-      {renderContent()}
-    </DashboardLayout>
+    <>
+      <DashboardLayout 
+        title="Patient Portal" 
+        menuItems={menuItems}
+        activeSection={activeSection}
+        onSectionChange={setActiveSection}
+      >
+        {renderContent()}
+      </DashboardLayout>
+      
+      {/* AI Chatbot for User Dashboard */}
+      <ChatbotButton />
+    </>
   );
 };
 

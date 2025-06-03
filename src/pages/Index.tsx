@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import Header from '@/components/Header';
 import ModernLogo from '@/components/ModernLogo';
@@ -34,6 +33,7 @@ import {
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { motion } from 'framer-motion';
+import ChatbotButton from '@/components/ai/ChatbotButton';
 
 const Index = () => {
   const { t } = useLanguage();
@@ -618,6 +618,9 @@ const Index = () => {
           </div>
         </motion.div>
       )}
+
+      {/* AI Chatbot */}
+      <ChatbotButton />
     </div>
   );
 };
