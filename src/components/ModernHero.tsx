@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -51,30 +52,105 @@ const ModernHero: React.FC<ModernHeroProps> = ({ onShowAuth, onShowHealthID }) =
         </svg>
       </div>
 
-      {/* Animated health particles */}
+      {/* Animated Heartbeat Line Background */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {[...Array(20)].map((_, i) => (
+        <svg className="absolute top-1/2 left-0 w-full h-32 transform -translate-y-1/2 opacity-10" viewBox="0 0 1200 100">
+          <motion.path
+            d="M0,50 L200,50 L220,20 L240,80 L260,10 L280,90 L300,50 L1200,50"
+            stroke="url(#heartbeat-gradient)"
+            strokeWidth="3"
+            fill="none"
+            initial={{ pathLength: 0 }}
+            animate={{ pathLength: 1 }}
+            transition={{ 
+              duration: 3,
+              repeat: Infinity,
+              ease: "linear"
+            }}
+          />
+          <defs>
+            <linearGradient id="heartbeat-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stopColor="#ef4444" />
+              <stop offset="50%" stopColor="#f97316" />
+              <stop offset="100%" stopColor="#06b6d4" />
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+
+      {/* Floating Medical Hearts with Heartbeat Animation */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {[...Array(8)].map((_, i) => (
           <motion.div
             key={i}
-            className="absolute w-2 h-2 bg-blue-400/20 rounded-full"
+            className="absolute"
             initial={{ 
               x: Math.random() * window.innerWidth,
               y: window.innerHeight + 10
             }}
             animate={{ 
-              y: -10,
+              y: -50,
               x: Math.random() * window.innerWidth
             }}
             transition={{ 
-              duration: Math.random() * 10 + 10,
+              duration: Math.random() * 15 + 10,
               repeat: Infinity,
-              ease: "linear"
+              ease: "linear",
+              delay: Math.random() * 5
+            }}
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`
+            }}
+          >
+            <motion.div
+              animate={{ 
+                scale: [1, 1.3, 1],
+                opacity: [0.3, 0.7, 0.3]
+              }}
+              transition={{ 
+                duration: 1.2,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+            >
+              <Heart 
+                className="text-red-400/30" 
+                size={Math.random() * 20 + 20} 
+                fill="currentColor"
+              />
+            </motion.div>
+          </motion.div>
+        ))}
+      </div>
+
+      {/* Animated Health Pulse Circles */}
+      <div className="absolute inset-0 pointer-events-none">
+        {[...Array(6)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute rounded-full border-2 border-blue-300/20"
+            style={{
+              left: `${20 + i * 15}%`,
+              top: `${30 + (i % 2) * 40}%`,
+              width: `${60 + i * 20}px`,
+              height: `${60 + i * 20}px`
+            }}
+            animate={{
+              scale: [1, 1.5, 1],
+              opacity: [0.3, 0.1, 0.3]
+            }}
+            transition={{
+              duration: 3 + i * 0.5,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: i * 0.5
             }}
           />
         ))}
       </div>
 
-      {/* Floating medical icons */}
+      {/* Floating medical icons with health themes */}
       <div className="absolute inset-0 pointer-events-none">
         <motion.div
           animate={{ 
@@ -88,7 +164,18 @@ const ModernHero: React.FC<ModernHeroProps> = ({ onShowAuth, onShowHealthID }) =
           }}
           className="absolute top-1/4 left-1/4"
         >
-          <Heart className="text-red-300/30" size={40} />
+          <motion.div
+            animate={{
+              scale: [1, 1.2, 1]
+            }}
+            transition={{
+              duration: 2,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+          >
+            <Heart className="text-red-300/40" size={40} fill="currentColor" />
+          </motion.div>
         </motion.div>
         
         <motion.div
@@ -104,7 +191,7 @@ const ModernHero: React.FC<ModernHeroProps> = ({ onShowAuth, onShowHealthID }) =
           }}
           className="absolute top-1/3 right-1/4"
         >
-          <Activity className="text-green-300/30" size={35} />
+          <Activity className="text-green-300/40" size={35} />
         </motion.div>
         
         <motion.div
@@ -119,7 +206,23 @@ const ModernHero: React.FC<ModernHeroProps> = ({ onShowAuth, onShowHealthID }) =
           }}
           className="absolute bottom-1/3 left-1/3"
         >
-          <Shield className="text-blue-300/30" size={32} />
+          <Shield className="text-blue-300/40" size={32} />
+        </motion.div>
+
+        {/* Additional medical plus signs */}
+        <motion.div
+          animate={{
+            rotate: [0, 90, 180, 270, 360],
+            scale: [1, 1.3, 1]
+          }}
+          transition={{
+            duration: 6,
+            repeat: Infinity,
+            ease: "linear"
+          }}
+          className="absolute top-2/3 right-1/3"
+        >
+          <Plus className="text-red-300/40" size={28} />
         </motion.div>
       </div>
       
@@ -166,20 +269,20 @@ const ModernHero: React.FC<ModernHeroProps> = ({ onShowAuth, onShowHealthID }) =
                   </span>
                 </motion.h1>
                 
-                {/* Plus icon animation */}
+                {/* Heartbeat pulse animation */}
                 <motion.div
                   animate={{ 
-                    rotate: [0, 90, 180, 270, 360],
-                    scale: [1, 1.2, 1]
+                    scale: [1, 1.4, 1],
+                    opacity: [0.7, 1, 0.7]
                   }}
                   transition={{ 
-                    duration: 4,
+                    duration: 1.2,
                     repeat: Infinity,
                     ease: "easeInOut"
                   }}
                   className="absolute -top-4 -right-4 text-red-500"
                 >
-                  <Plus size={24} />
+                  <Heart size={32} fill="currentColor" />
                 </motion.div>
               </div>
               
@@ -257,14 +360,14 @@ const ModernHero: React.FC<ModernHeroProps> = ({ onShowAuth, onShowHealthID }) =
                       }}
                       className="ml-2"
                     >
-                      <Heart size={20} />
+                      <Heart size={20} fill="currentColor" />
                     </motion.div>
                   </Button>
                 </motion.div>
               )}
             </motion.div>
             
-            {/* Health Metrics Display */}
+            {/* Health Metrics Display with heartbeat animations */}
             <motion.div 
               className="grid grid-cols-2 md:grid-cols-4 gap-4"
               initial={{ opacity: 0, y: 20 }}
@@ -275,22 +378,39 @@ const ModernHero: React.FC<ModernHeroProps> = ({ onShowAuth, onShowHealthID }) =
                 <motion.div
                   key={index}
                   whileHover={{ scale: 1.05 }}
-                  className="bg-white/80 backdrop-blur-sm rounded-xl p-4 shadow-sm border border-gray-100 text-center"
+                  className="bg-white/80 backdrop-blur-sm rounded-xl p-4 shadow-sm border border-gray-100 text-center relative overflow-hidden"
                 >
+                  {/* Pulse background for heart health */}
+                  {metric.label === 'Heart Health' && (
+                    <motion.div
+                      className="absolute inset-0 bg-red-100/50"
+                      animate={{
+                        opacity: [0, 0.3, 0]
+                      }}
+                      transition={{
+                        duration: 1.2,
+                        repeat: Infinity,
+                        ease: "easeInOut"
+                      }}
+                    />
+                  )}
+                  
                   <motion.div
                     animate={{ 
-                      rotate: index % 2 === 0 ? [0, 360] : [360, 0]
+                      rotate: index % 2 === 0 ? [0, 360] : [360, 0],
+                      scale: metric.label === 'Heart Health' ? [1, 1.1, 1] : [1, 1.05, 1]
                     }}
                     transition={{ 
-                      duration: 8,
+                      duration: metric.label === 'Heart Health' ? 1.2 : 8,
                       repeat: Infinity,
-                      ease: "linear"
+                      ease: metric.label === 'Heart Health' ? "easeInOut" : "linear"
                     }}
+                    className="relative z-10"
                   >
                     <metric.icon className={`${metric.color} mx-auto mb-2`} size={24} />
                   </motion.div>
-                  <div className="text-lg font-bold text-gray-900">{metric.value}</div>
-                  <div className="text-xs text-gray-600">{metric.label}</div>
+                  <div className="text-lg font-bold text-gray-900 relative z-10">{metric.value}</div>
+                  <div className="text-xs text-gray-600 relative z-10">{metric.label}</div>
                 </motion.div>
               ))}
             </motion.div>
@@ -365,16 +485,16 @@ const ModernHero: React.FC<ModernHeroProps> = ({ onShowAuth, onShowHealthID }) =
                     <div className="flex items-center gap-3">
                       <motion.div
                         animate={{ 
-                          rotate: [0, 360]
+                          scale: [1, 1.2, 1]
                         }}
                         transition={{ 
-                          duration: 3,
+                          duration: 1.2,
                           repeat: Infinity,
-                          ease: "linear"
+                          ease: "easeInOut"
                         }}
-                        className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg"
+                        className="w-10 h-10 bg-gradient-to-br from-red-500 to-red-600 rounded-xl flex items-center justify-center shadow-lg"
                       >
-                        <Heart size={20} className="text-white" />
+                        <Heart size={20} className="text-white" fill="currentColor" />
                       </motion.div>
                       <div>
                         <h3 className="font-bold text-gray-900">Health Dashboard</h3>
@@ -383,20 +503,21 @@ const ModernHero: React.FC<ModernHeroProps> = ({ onShowAuth, onShowHealthID }) =
                     </div>
                     <motion.div
                       animate={{ 
-                        scale: [1, 1.1, 1]
+                        scale: [1, 1.3, 1],
+                        opacity: [0.5, 1, 0.5]
                       }}
                       transition={{ 
-                        duration: 2,
+                        duration: 1.2,
                         repeat: Infinity
                       }}
                       className="w-3 h-3 bg-green-500 rounded-full"
                     />
                   </div>
                   
-                  {/* Vital Signs */}
+                  {/* Vital Signs with heartbeat animations */}
                   <div className="space-y-4">
                     {[
-                      { label: 'Heart Rate', value: '72 BPM', color: 'bg-red-100 text-red-800', progress: 72 },
+                      { label: 'Heart Rate', value: '72 BPM', color: 'bg-red-100 text-red-800', progress: 72, isHeart: true },
                       { label: 'Blood Pressure', value: '120/80', color: 'bg-blue-100 text-blue-800', progress: 85 },
                       { label: 'Oxygen Level', value: '98%', color: 'bg-green-100 text-green-800', progress: 98 },
                       { label: 'Health Score', value: '95/100', color: 'bg-purple-100 text-purple-800', progress: 95 }
@@ -408,6 +529,19 @@ const ModernHero: React.FC<ModernHeroProps> = ({ onShowAuth, onShowHealthID }) =
                         transition={{ delay: 1 + index * 0.2 }}
                         className={`${vital.color} rounded-lg p-3 relative overflow-hidden`}
                       >
+                        {vital.isHeart && (
+                          <motion.div
+                            className="absolute inset-0 bg-red-200/30"
+                            animate={{
+                              opacity: [0, 0.5, 0]
+                            }}
+                            transition={{
+                              duration: 1,
+                              repeat: Infinity,
+                              ease: "easeInOut"
+                            }}
+                          />
+                        )}
                         <div className="flex items-center justify-between relative z-10">
                           <span className="font-medium text-sm">{vital.label}</span>
                           <span className="font-bold">{vital.value}</span>
@@ -426,7 +560,7 @@ const ModernHero: React.FC<ModernHeroProps> = ({ onShowAuth, onShowHealthID }) =
                     ))}
                   </div>
                   
-                  {/* Activity Chart Mockup */}
+                  {/* Activity Chart Mockup with heartbeat-like bars */}
                   <div className="mt-6 bg-gray-50 rounded-lg p-4">
                     <h4 className="text-sm font-medium text-gray-700 mb-3">Weekly Activity</h4>
                     <div className="flex items-end justify-between h-16 gap-1">
@@ -434,10 +568,18 @@ const ModernHero: React.FC<ModernHeroProps> = ({ onShowAuth, onShowHealthID }) =
                         <motion.div
                           key={index}
                           initial={{ height: 0 }}
-                          animate={{ height: `${height}%` }}
+                          animate={{ 
+                            height: `${height}%`,
+                            backgroundColor: index === 3 ? ['#3b82f6', '#ef4444', '#3b82f6'] : '#3b82f6'
+                          }}
                           transition={{ 
                             duration: 0.8,
-                            delay: 2 + index * 0.1
+                            delay: 2 + index * 0.1,
+                            backgroundColor: {
+                              duration: 1.2,
+                              repeat: index === 3 ? Infinity : 0,
+                              ease: "easeInOut"
+                            }
                           }}
                           className="bg-gradient-to-t from-blue-500 to-blue-400 rounded-sm flex-1"
                         />
@@ -447,7 +589,7 @@ const ModernHero: React.FC<ModernHeroProps> = ({ onShowAuth, onShowHealthID }) =
                 </div>
               </motion.div>
               
-              {/* Floating notification cards */}
+              {/* Floating notification cards with health themes */}
               <motion.div
                 animate={{ 
                   y: [0, -10, 0],
@@ -463,10 +605,10 @@ const ModernHero: React.FC<ModernHeroProps> = ({ onShowAuth, onShowHealthID }) =
                 <div className="flex items-center gap-2">
                   <motion.div
                     animate={{ 
-                      scale: [1, 1.2, 1]
+                      scale: [1, 1.3, 1]
                     }}
                     transition={{ 
-                      duration: 2,
+                      duration: 1.2,
                       repeat: Infinity
                     }}
                     className="w-3 h-3 bg-green-500 rounded-full"
@@ -489,7 +631,18 @@ const ModernHero: React.FC<ModernHeroProps> = ({ onShowAuth, onShowHealthID }) =
                 className="absolute -bottom-4 -left-4 bg-white rounded-2xl p-4 shadow-lg border"
               >
                 <div className="flex items-center gap-2">
-                  <Heart size={16} className="text-red-500" />
+                  <motion.div
+                    animate={{
+                      scale: [1, 1.2, 1]
+                    }}
+                    transition={{
+                      duration: 1.2,
+                      repeat: Infinity,
+                      ease: "easeInOut"
+                    }}
+                  >
+                    <Heart size={16} className="text-red-500" fill="currentColor" />
+                  </motion.div>
                   <span className="text-sm font-medium text-gray-700">24/7 Monitoring</span>
                 </div>
               </motion.div>
